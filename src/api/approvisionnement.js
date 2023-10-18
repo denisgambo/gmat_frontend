@@ -1,7 +1,7 @@
 import axios from "axios";
-async function createApprovisionnement(donnes, user) {
+async function createApprovisionnement(donnes) {
     try {
-        const response = await axios.post(`http://127.0.0.1:3000/approvisionnement`, donnes);
+        const response = await axios.post(`http://159.89.166.117:3000/approvisionnement`, donnes);
         return response.data;
     } catch (error) {
         console.log(error);
@@ -13,7 +13,7 @@ async function createApprovisionnement(donnes, user) {
 //dernier approvisionnement
 async function getLastAppro() {
     try {
-        const response = await axios.get(`http://127.0.0.1:3000/approvisionnement/last`);
+        const response = await axios.get(`http://159.89.166.117:3000/approvisionnement/last`);
         return response.data;
     } catch (error) {
         console.log(error);
@@ -23,7 +23,7 @@ async function getLastAppro() {
 
 async function createLigneApprovisionnement(donnes) {
     try {
-        const response = await axios.post(`http://127.0.0.1:3000/ligneapp`, donnes);
+        const response = await axios.post(`http://159.89.166.117:3000/ligneapp`, donnes);
         return response.data;
     } catch (error) {
         console.log(error);
@@ -34,7 +34,7 @@ async function createLigneApprovisionnement(donnes) {
 // Fonction pour mettre à jour la quantité en stock d'un consommable
 async function updateStock(id, quantite, type) {
   try {
-    const response = await axios.put(`http://127.0.0.1:3000/consommable/update`, { id, quantite, type });
+    const response = await axios.put(`http://159.89.166.117:3000/consommable/update`, { id, quantite, type });
     return response.data;
   } catch (error) {
     console.log(error);
@@ -46,7 +46,7 @@ async function updateStock(id, quantite, type) {
 //historique approvisionnements
 async function historiqueAppro() {
     try {
-        const response = await axios.get(`http://127.0.0.1:3000/approvisionnement`);
+        const response = await axios.get(`http://159.89.166.117:3000/approvisionnement`);
         return response.data;
     } catch (error) {
         console.log(error);

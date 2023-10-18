@@ -27,6 +27,7 @@
                         <td>
                             <button @click="removeAnomalie(anomalie._id)" type="button"
                                 class="btn btn-danger">Supprimer</button>
+                            <button @click="modifier(anomalie)" type="button" class="btn btn-secondary">Modifier</button>
                         </td>
 
                     </tr>
@@ -34,6 +35,7 @@
             </table>
         </div>
         <AjouterAnomalie v-if="display_anomalie_form" />
+        <ModifierAnnomalie :anno="a_modifier" v-if="display_modif" />
 
     </div>
 </template>
@@ -42,18 +44,22 @@
 
 import { getAllAnomalies, supprimerAnomalie } from '@/api/anomalie';
 import AjouterAnomalie from './AjouterAnomalie.vue';
+import ModifierAnnomalie from './ModifierAnnomalie.vue';
 import Swal from 'sweetalert2';
 
 export default {
     name: "Anomalies",
     components: {
-        AjouterAnomalie
+        AjouterAnomalie,
+        ModifierAnnomalie
     },
     data() {
         return {
             anomalies: [],
-            display_list_anomalies: false,
-            display_anomalie_form: false
+            a_modifier: {},
+            display_list_anomalies: true,
+            display_anomalie_form: false,
+            display_modif: false
         }
     },
 
@@ -66,10 +72,20 @@ export default {
             if (entree == 1) {
                 this.display_anomalie_form = true;
                 this.display_list_anomalies = false;
+                this.display_modif = false
             } else if (entree == 2) {
                 this.display_anomalie_form = false;
-                this.display_list_anomalies = true
+                this.display_list_anomalies = true;
+                this.display_modif = false
+            } else if (entree == 3) {
+                this.display_anomalie_form = false;
+                this.display_list_anomalies = false;
+                this.display_modif = true
             }
+        },
+        modifier(anomalie) {
+            this.a_modifier = anomalie
+            this.changeDisplay(3)
         },
         async removeAnomalie(id) {
             Swal.fire({

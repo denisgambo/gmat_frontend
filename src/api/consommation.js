@@ -2,7 +2,7 @@ import axios from "axios";
 //Dernière consommation
 async function getLastConsommation() {
     try {
-        const response = await axios.get(`http://127.0.0.1:3000/consommation/lastconsommation`);
+        const response = await axios.get(`http://159.89.166.117:3000/consommation/lastconsommation`);
         return response.data;
     } catch (error) {
         console.log(error);
@@ -12,7 +12,7 @@ async function getLastConsommation() {
 
 async function createConsommation(consommationData) {
     try {
-        const response = await axios.post(`http://127.0.0.1:3000/consommation`, consommationData);
+        const response = await axios.post(`http://159.89.166.117:3000/consommation`, consommationData);
         return response.data;
     } catch (error) {
         console.log(error);
@@ -22,7 +22,7 @@ async function createConsommation(consommationData) {
 
 async function getConsommationByConsommable(consommableId) {
     try {
-        const response = await axios.get(`http://127.0.0.1:3000/consommation/parconsommable?consommableId=${consommableId}`);
+        const response = await axios.get(`http://159.89.166.117:3000/consommation/parconsommable?consommableId=${consommableId}`);
 
         return response.data;
     } catch (error) {
@@ -33,7 +33,7 @@ async function getConsommationByConsommable(consommableId) {
 
 async function getConsommationByEquipement(equipementId) {
     try {
-        const response = await axios.get(`http://127.0.0.1:3000/consommation/parequipement?equipementId=${equipementId}`);
+        const response = await axios.get(`http://159.89.166.117:3000/consommation/parequipement?equipementId=${equipementId}`);
 
         return response.data;
     } catch (error) {

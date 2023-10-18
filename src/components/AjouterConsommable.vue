@@ -14,28 +14,29 @@
         <form id="inscription-form" action="#" method="POST" v-if="display_consommable_form"
             @submit.prevent="creerConsommable(nouvel_consommable)" enctype="multipart/form-data">
             <h3>Ajouter un consommable</h3>
-            <div class="form-group">
-                <label for="nom">Nom du consommable</label>
-                <input v-model="nouvel_consommable.nom" type="text" id="nom" name="nom" required>
-            </div>
             <div class="select">
                 <div class="form-group">
                     <label for="categorie">Catégorie</label>
                     <select v-model="nouvel_consommable.categorie" name="categorie" id="">
-                        <option value="">Pas de catégorie</option>
+                        <option value="">Choisir la catégorie</option>
                         <option v-for="cat in list_categorie" :key="cat._id" :value="cat._id">{{ cat.nom }}</option>
                     </select>
                 </div>
             </div>
             <div class="form-group">
+                <label for="nom">Nom du consommable</label>
+                <input v-model="nouvel_consommable.nom" type="text" id="nom" name="nom" required>
+            </div>
+
+            <div class="form-group">
                 <label for="adresse">Description</label>
                 <textarea v-model="nouvel_consommable.description" id="description" name="description"></textarea>
             </div>
 
-            <div class="form-group">
+            <!-- <div class="form-group">
                 <label for="prix_achat">Prix d'achat</label>
                 <input v-model="nouvel_consommable.prix_achat" type="number" id="" name="prix_achat" disabled>
-            </div>
+            </div> -->
             <div class="form-group">
                 <label for="image_consommable">Image</label>
                 <input type="file" id="image_consommable" @change="handleFileChange" name="image_consommable">
@@ -45,11 +46,11 @@
                 <textarea v-model="nouvel_consommable.observation" id="observation" name="observation"></textarea>
             </div>
             <div class="date">
-                <div class="form-group">
+                <!-- <div class="form-group">
                     <label for="quantite_en_stock">Quantité en stock</label>
                     <input v-model="nouvel_consommable.quantite_en_stock" type="number" id="" name="quantite_en_stock"
                         disabled>
-                </div>
+                </div> -->
 
                 <div class="form-group">
                     <label for="seuil_critique">Seuil critique</label>
@@ -108,7 +109,7 @@
                                     cons.quantite_en_stock }}
                                 </option>
                             </select>
-                            <span v-if="!isEquipementSelected" class="error-message">Champ obligatoire.</span>
+
                         </td>
 
                         <td>
@@ -117,7 +118,7 @@
                                 <option v-for="eq in listEquipements" :key="eq._id" :value="eq._id">{{ eq.nom }}
                                 </option>
                             </select>
-                            <span v-if="!isEquipementSelected" class="error-message">Champ obligatoire.</span>
+
                         </td>
                         <td>
                             <input class="commentaire" type="number" v-model="nouvelle_consommation.quantite" id=""
@@ -125,8 +126,13 @@
                         </td>
 
                         <td>
-                            <textarea class="commentaire" v-model="nouvelle_consommation.description" id="description"
-                                name="description"></textarea>
+                            <!-- <textarea class="commentaire" v-model="nouvelle_consommation.description" id="description"
+                                name="description"></textarea> -->
+                            <select v-model="nouvelle_consommation.description" name="description" id="" required>
+                                <option value="" disabled selected>-- Sélectionnez --</option>
+                                <option v-for="just in justifications" :key="just._id" :value="just.titre">{{ just.titre }}
+                                </option>
+                            </select>
                         </td>
 
                         <td>
@@ -184,11 +190,7 @@
                         </button>
                     </td>
                 </tr>
-                <!--  <tr class="no-print">
-                    <td>
-                        <button type="button" v-print="'#list_consommables'">Imprimer</button>
-                    </td>
-                </tr> -->
+
 
             </table>
             <div class="no-print">
@@ -199,18 +201,6 @@
 
             <div class="list-categories" v-if="display_card">
 
-
-                <!--    <div class="single-categorie" v-for="eq in list_equipement" :key="eq._id">
-                    <h4>{{ eq.nom }}</h4>
-                    <button>Voir la liste des maintenances</button><br><br>
-                    <button>Faire une maintenance</button>
-                </div> -->
-
-                <!--  <div class="single-categorie" v-for="eq in list_equipement" :key="eq._id">
-                    <h4>{{ eq.nom }}</h4>
-                    <button>Voir la liste des maintenances</button><br><br>
-                    <button>Faire une maintenance</button>
-                </div> -->
 
                 <div class="card" style="width: 15rem;" v-for="cons in searchCons" :key="cons._id">
                     <img :src="cons.image_consommable" alt="..." v-if="cons.image_consommable">
@@ -238,6 +228,8 @@ import router from '@/router';
 
 import Swal from 'sweetalert2'
 import axios from 'axios';
+import { getAllJustifications } from '@/api/justification';
+
 import { createConsommation } from '@/api/consommation';
 import { getCategoriesConsommable, createConsommable, getAllConsommables, supprimerConsommable } from '../api/consommable'
 import { updateStock } from '@/api/approvisionnement';
@@ -258,6 +250,7 @@ export default {
     data() {
         return {
             user: {},
+            justifications: [],
             list_categorie: "",
             display_table: true,
             display_consommation_form: false,
@@ -279,7 +272,7 @@ export default {
                 code_bar: "",
                 code_qr: "",
                 image_consommable: "",
-                seuil_critique: 0,
+                seuil_critique: 10,
             },
 
             nouvelle_consommation: {
@@ -298,11 +291,12 @@ export default {
     directives: {
         print
     },
-    created() {
+    async created() {
         this.chargerCategories();
         this.chargerConsommables();
         this.chargerEquipement();
         this.user = JSON.parse(localStorage.getItem('user'))
+        this.justifications = await getAllJustifications()
     },
     computed: {
         searchCons() {
@@ -321,31 +315,7 @@ export default {
                 console.log(error)
             }
         },
-        /*  async creerConsommable(consommableData) {
-             // Vérifier si tous les champs sont saisis
-             if (
-                 !consommableData.nom ||
-                 !consommableData.prix_achat ||
-                 !consommableData.categorie
-             ) {
-                 Swal.fire({
-                     title: 'Veuillez remplir tous les champs du consommable',
-                     icon: 'error'
-                 });
-                 return;
-             }
- 
-             try {
-                 await createConsommable(consommableData);
-                 Swal.fire({
-                     title: 'Enregistré avec succès',
-                     icon: 'success'
-                 });
-                 this.nouvel_consommable = {}; // Réinitialiser les valeurs du nouvel consommable
-             } catch (error) {
-                 console.log(error);
-             }
-         } */
+
 
         async creerConsommable(consommableData) {
             // Vérifier si tous les champs sont saisis
@@ -376,7 +346,7 @@ export default {
                 formData.append('code_qr', consommableData.code_qr);
 
                 // Envoyer la requête AJAX pour créer l'équipement
-                const response = await axios.post('http://127.0.0.1:3000/consommable', formData, { headers: { 'Content-Type': 'multipart/form-data' } });
+                const response = await axios.post('http://159.89.166.117:3000/consommable', formData, { headers: { 'Content-Type': 'multipart/form-data' } });
                 console.log(formData)
 
                 // Vérifier la réponse de l'API

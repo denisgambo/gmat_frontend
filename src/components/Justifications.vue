@@ -27,6 +27,7 @@
                         <td>
                             <button @click="removeJustification(justication._id)" type="button"
                                 class="btn btn-danger">Supprimer</button>
+                            <button @click="modifier(justication)" type="button" class="btn btn-secondary">Modifier</button>
                         </td>
 
                     </tr>
@@ -34,25 +35,30 @@
             </table>
         </div>
         <AjouterJustification v-if="display_justification_form" />
+        <ModifierJustification :justif="a_modifier" v-if="display_mdofif" />
 
     </div>
 </template>
 
 <script>
 import AjouterJustification from './AjouterJustification.vue';
+import ModifierJustification from './ModifierJustification.vue';
 import Swal from 'sweetalert2';
 import { getAllJustifications, supprimerJustification } from '@/api/justification';
 
 export default {
     name: "Justifications",
     components: {
-        AjouterJustification
+        AjouterJustification,
+        ModifierJustification
     },
     data() {
         return {
             justifications: [],
-            display_list_justifications: false,
-            display_justification_form: false
+            a_modifier: {},
+            display_list_justifications: true,
+            display_justification_form: false,
+            display_mdofif: false
         }
     },
 
@@ -65,10 +71,20 @@ export default {
             if (entree == 1) {
                 this.display_justification_form = true;
                 this.display_list_justifications = false;
+                this.display_mdofif = false
             } else if (entree == 2) {
                 this.display_justification_form = false;
                 this.display_list_justifications = true
+                this.display_mdofif = false
+            } else if (entree == 3) {
+                this.display_justification_form = false;
+                this.display_list_justifications = false
+                this.display_mdofif = true
             }
+        },
+        modifier(justification) {
+            this.a_modifier = justification
+            this.changeDisplay(3)
         },
         async removeJustification(id) {
             Swal.fire({

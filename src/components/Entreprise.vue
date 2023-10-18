@@ -73,7 +73,7 @@ export default {
                 formData.append('email', this.entreprise.email);
                 formData.append('logo', this.entreprise.logo); // Append the selected logo file
 
-                const response = await axios.put(`http://127.0.0.1:3000/entreprise/${id}`, formData, {
+                const response = await axios.put(`http://159.89.166.117:3000/entreprise/${id}`, formData, {
                     headers: {
                         'Content-Type': 'multipart/form-data', // Set the content type to multipart/form-data
                     },

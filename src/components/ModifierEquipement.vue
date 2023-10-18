@@ -5,12 +5,6 @@
         <form enctype="multipart/form-data" @submit.prevent="ModifierEquipement(id)">
             <h3>Modifier l'équipement</h3>
 
-            <div class="form-group">
-                <label for="nom">Nom de l'équipement <small class="ob">*</small></label>
-                <input v-model="equipement_a_modifier.nom" type="text" id="nom" required>
-                <p>{{ equipement_a_modifier.nom }}</p>
-            </div>
-
             <div class="select">
                 <div class="form-group">
                     <label for="categorie">Catégorie</label>
@@ -18,6 +12,16 @@
                         <option v-for="cat in list_categorie" :key="cat._id" :value="cat._id">{{ cat.nom }}</option>
                     </select>
                 </div>
+            </div>
+
+            <div class="form-group">
+                <label for="nom">Nom de l'équipement <small class="ob">*</small></label>
+                <input v-model="equipement_a_modifier.nom" type="text" id="nom" required>
+                <p>{{ equipement_a_modifier.nom }}</p>
+            </div>
+
+            <div class="select">
+
                 <div class="form-group">
                     <label for="service">Service</label>
                     <select v-model="equipement_a_modifier.service" id="service">
@@ -41,6 +45,10 @@
             <div class="form-group">
                 <label for="code_inventaire">Code inventaire <small class="ob">*</small></label>
                 <input v-model="equipement_a_modifier.code_inventaire" type="text" id="code_inventaire">
+            </div>
+            <div class="form-group">
+                <label for="numero_serie">Numéro de série </label>
+                <input v-model="equipement_a_modifier.numero_serie" type="text" id="numero_serie">
             </div>
             <div class="form-group">
                 <label for="marque">Marque <small class="ob">*</small></label>
@@ -87,7 +95,7 @@
                 </div>
             </div>
             <div class="form-group">
-                <input type="submit" value="Ajouter">
+                <input type="submit" value="Modifier">
                 <input type="submit" value="Retour" @click.prevent="retour" class="space">
             </div>
         </form>
@@ -180,9 +188,10 @@ export default {
                 formData.append('code_bar', this.equipement_a_modifier.code_bar);
                 formData.append('code_qr', this.equipement_a_modifier.code_qr);
                 formData.append('service', this.equipement_a_modifier.service);
+                formData.append('numero_serie', this.equipement_a_modifier.numero_serie);
 
                 // Envoyer la requête AJAX pour créer l'équipement
-                const response = await axios.put(`http://127.0.0.1:3000/equipement/${id}`, formData, {
+                const response = await axios.put(`http://159.89.166.117:3000/equipement/${id}`, formData, {
                     headers: {
                         'Content-Type': 'multipart/form-data'
                     },

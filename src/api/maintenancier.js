@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'http://127.0.0.1:3000/maintenancier';
+const API_URL = 'http://159.89.166.117:3000/maintenancier';
 
 //Tous les services
 async function getAllMaintenanciers() {
@@ -35,4 +35,14 @@ async function supprimerMaintenancier(id) {
   }
 }
 
-export { getAllMaintenanciers, createMaintenancier, supprimerMaintenancier };
+async function ModifierMaintenancier(id, maintenancier) {
+    try {
+        const response = await axios.put(`${API_URL}/modifier/${id}`, maintenancier);
+        return response.data;
+    } catch (error) {
+        console.log(error);
+        throw error;
+    }
+}
+
+export { getAllMaintenanciers, createMaintenancier, supprimerMaintenancier, ModifierMaintenancier };

@@ -79,19 +79,31 @@
             </div>
         </form>
     </div>
+
+    <div class="cat_eq" v-if="affiche_form_equip">
+        <CategorieEquipement />
+    </div>
+
+    <div class="cat_eq" v-if="affiche_form_conso">
+        <CategorieConsommable />
+    </div>
 </template>
 
 <script>
 import Swal from 'sweetalert2'
 import axios from 'axios'
-import { createCategorie } from '../api/equipement'
-import { createCategorieConsommable } from '../api/consommable'
+import ListeCategories from './ListeCategories.vue'
+import CategorieConsommable from './CategorieConsommable.vue'
+import CategorieEquipement from './CategorieEquipement.vue'
 import MenuBar from './MenuBar.vue'
 
 export default {
     name: "AjouterCategorie",
     components: {
-        MenuBar
+        MenuBar,
+        ListeCategories,
+        CategorieEquipement,
+        CategorieConsommable
     },
 
     data() {
@@ -146,7 +158,7 @@ export default {
                 formData.append('image_categorie', this.new_categorie_equiement.image_categorie);
                 formData.append('code_bar', this.new_categorie_equiement.code_bar);
                 // Envoyer la requête AJAX pour créer l'équipement
-                const response = await axios.post('http://127.0.0.1:3000/categorie', formData, { headers: { 'Content-Type': 'multipart/form-data' } });
+                const response = await axios.post('http://159.89.166.117:3000/categorie', formData, { headers: { 'Content-Type': 'multipart/form-data' } });
 
                 // Vérifier la réponse de l'API
                 if (response.status === 200) {
@@ -232,7 +244,7 @@ export default {
                 formData.append('code_bar', this.new_categorie_consommable.code_bar);
 
                 // Envoyer la requête AJAX pour créer l'équipement
-                const response = await axios.post('http://127.0.0.1:3000/categorieconsommable', formData, { headers: { 'Content-Type': 'multipart/form-data' } });
+                const response = await axios.post('http://159.89.166.117:3000/categorieconsommable', formData, { headers: { 'Content-Type': 'multipart/form-data' } });
 
                 // Vérifier la réponse de l'API
                 if (response.status === 200) {
@@ -291,11 +303,7 @@ export default {
             this.new_categorie_equiement.image_categorie = file;
         },
 
-        /* deconnexion() {
-            if (confirm('Êtes-vous sûr de vouloir vous déconnecter ?')) {
-                this.$router.push('/');
-            }
-        }, */
+
     }
 }
 </script>

@@ -4,29 +4,30 @@
 
         <form id="inscription-form" action="#" method="POST"
             @submit.prevent="ModifierConsommable(id, consommable_a_modifier)" enctype="multipart/form-data">
-            <h3>Ajouter un consommable</h3>
-            <div class="form-group">
-                <label for="nom">Nom du consommable</label>
-                <input v-model="consommable_a_modifier.nom" type="text" id="nom" name="nom" required>
-            </div>
+            <h3>Modifier un consommable</h3>
             <div class="select">
                 <div class="form-group">
                     <label for="categorie">Catégorie</label>
                     <select v-model="consommable_a_modifier.categorie" name="categorie" id="">
-                        <option value="">Pas de catégorie</option>
+                        <!-- <option value="">Pas de catégorie</option> -->
                         <option v-for="cat in list_categorie" :key="cat._id" :value="cat._id">{{ cat.nom }}</option>
                     </select>
                 </div>
             </div>
             <div class="form-group">
+                <label for="nom">Nom du consommable</label>
+                <input v-model="consommable_a_modifier.nom" type="text" id="nom" name="nom" required>
+            </div>
+
+            <div class="form-group">
                 <label for="adresse">Description</label>
                 <textarea v-model="consommable_a_modifier.description" id="description" name="description"></textarea>
             </div>
 
-            <div class="form-group">
+            <!-- <div class="form-group">
                 <label for="prix_achat">Prix d'achat</label>
                 <input v-model="consommable_a_modifier.prix_achat" type="number" id="" name="prix_achat" disabled>
-            </div>
+            </div> -->
             <div class="form-group">
                 <label for="image_consommable">Image</label>
                 <input type="file" id="image_consommable" @change="handleFileChange" name="image_consommable">
@@ -36,11 +37,11 @@
                 <textarea v-model="consommable_a_modifier.observation" id="observation" name="observation"></textarea>
             </div>
             <div class="date">
-                <div class="form-group">
+                <!-- <div class="form-group">
                     <label for="quantite_en_stock">Quantité en stock</label>
                     <input v-model.number="consommable_a_modifier.quantite_en_stock" type="number" id=""
                         name="quantite_en_stock" disabled>
-                </div>
+                </div> -->
                 <div class="form-group">
                     <label for="seuil_critique">Seuil critique</label>
                     <input v-model.number="consommable_a_modifier.seuil_critique" type="number" id="" name="seuil_critique">
@@ -136,7 +137,7 @@ export default {
 
 
                 // Envoyer la requête AJAX pour créer l'équipement
-                const response = await axios.put(`http://127.0.0.1:3000/consommable/${id}`, formData, {
+                const response = await axios.put(`http://159.89.166.117:3000/consommable/${id}`, formData, {
                     headers: {
                         'Content-Type': 'multipart/form-data'
                     },

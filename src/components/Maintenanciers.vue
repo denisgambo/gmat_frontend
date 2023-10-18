@@ -30,6 +30,7 @@
                         <td>
                             <button @click="removeMaintenancier(maintenancier._id)" type="button"
                                 class="btn btn-danger">Supprimer</button>
+                            <button @click="modifier(maintenancier)" type="button" class="btn btn-danger">Modifier</button>
                         </td>
 
                     </tr>
@@ -38,25 +39,30 @@
         </div>
 
         <AjouterMaintenancier v-if="display_maintenancier_form" />
+        <ModifierMaintenancier :maint="a_modifier" v-if="display_modif" />
     </div>
 </template>
 
 <script>
 
 import AjouterMaintenancier from './AjouterMaintenancier.vue'
+import ModifierMaintenancier from './ModifierMaintenancier.vue'
 import { getAllMaintenanciers, supprimerMaintenancier } from '@/api/maintenancier'
 import Swal from 'sweetalert2'
 import { testAdminUser } from '/auth/auth-guard-admin'
 export default {
     name: "Maintenancier",
     components: {
-        AjouterMaintenancier
+        AjouterMaintenancier,
+        ModifierMaintenancier
     },
     data() {
         return {
             maintenanciers: "",
             display_maintenancier_form: false,
-            display_list_maintenancier: false
+            display_list_maintenancier: true,
+            display_modif: false,
+            a_modifier: {}
         }
     },
 
@@ -68,10 +74,20 @@ export default {
             if (entree == 1) {
                 this.display_maintenancier_form = true;
                 this.display_list_maintenancier = false;
+                this.display_modif = false
             } else if (entree == 2) {
                 this.display_maintenancier_form = false;
-                this.display_list_maintenancier = true
+                this.display_list_maintenancier = true;
+                this.display_modif = false
+            } else if (entree == 3) {
+                this.display_maintenancier_form = false;
+                this.display_list_maintenancier = false;
+                this.display_modif = true
             }
+        },
+        modifier(maintenancier) {
+            this.a_modifier = maintenancier
+            this.changeDisplay(3)
         },
 
         async removeMaintenancier(id) {

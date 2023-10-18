@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'http://127.0.0.1:3000/operationmaintenance';
+const API_URL = 'http://159.89.166.117:3000/operationmaintenance';
 
 async function getAllMaintenance() {
     try {
@@ -14,7 +14,7 @@ async function getAllMaintenance() {
 
 async function getAllMaintenanceWithAgregation() {
     try {
-        const response = await axios.get(`http://127.0.0.1:3000/operationmaintenance/agregation2`);
+        const response = await axios.get(`http://159.89.166.117:3000/operationmaintenance/agregation2`);
         return response.data;
     } catch (error) {
         console.log(error);
@@ -24,7 +24,7 @@ async function getAllMaintenanceWithAgregation() {
 
 async function getMaintenanceByEquipement(equipementId) {
     try {
-        const response = await axios.get(`http://127.0.0.1:3000/operationmaintenance/agregationbyequipement`, equipementId);
+        const response = await axios.get(`http://159.89.166.117:3000/operationmaintenance/agregationbyequipement`, equipementId);
         return response.data;
     } catch (error) {
         console.log(error);
@@ -34,7 +34,7 @@ async function getMaintenanceByEquipement(equipementId) {
 
 async function createMaintenance(MaintenanceData) {
     try {
-        const response = await axios.post(`http://127.0.0.1:3000/operationmaintenance`, MaintenanceData);
+        const response = await axios.post(`http://159.89.166.117:3000/operationmaintenance`, MaintenanceData);
         return response.data;
     } catch (error) {
         console.log(error);
@@ -45,7 +45,7 @@ async function createMaintenance(MaintenanceData) {
 //Dernière maintenance
 async function getLastMaintenance() {
     try {
-        const response = await axios.get(`http://127.0.0.1:3000/operationmaintenance/lastmaintenance`);
+        const response = await axios.get(`http://159.89.166.117:3000/operationmaintenance/lastmaintenance`);
         return response.data;
     } catch (error) {
         console.log(error);
@@ -56,7 +56,7 @@ async function getLastMaintenance() {
 async function updateMaintenance(operationId, consommationId) {
   try {
     const response = await axios.put(
-      `http://127.0.0.1:3000/operationmaintenance/update`,
+      `http://159.89.166.117:3000/operationmaintenance/update`,
       { operationId, consommationId }
     );
     return response.data;
@@ -68,7 +68,7 @@ async function updateMaintenance(operationId, consommationId) {
 
 async function AjouterDepense(maintenanceId, depense) {
     try {
-const response = await axios.put(`http://127.0.0.1:3000/operationmaintenance/ajouter-depense/${maintenanceId}`, depense);
+const response = await axios.put(`http://159.89.166.117:3000/operationmaintenance/ajouter-depense/${maintenanceId}`, depense);
  return response.data;
     } catch (error) {
         console.log(error);

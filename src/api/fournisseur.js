@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'http://127.0.0.1:3000/fournisseur';
+const API_URL = 'http://159.89.166.117:3000/fournisseur';
 
 async function getAllFournisseur() {
     try {

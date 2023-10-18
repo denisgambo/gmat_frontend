@@ -1,4 +1,4 @@
-const API_URL = 'http://127.0.0.1:3000/connexion';
+const API_URL = 'http://159.89.166.117:3000/connexion';
 
 import axios from "axios";
 async function createConnexion(user) {

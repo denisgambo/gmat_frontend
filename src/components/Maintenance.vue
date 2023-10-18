@@ -33,15 +33,7 @@
     </ul>
   </nav>
 
-  <!-- <td class="no_print"><button @click.prevent="change_display()" class="addmaintenance">{{ btn_msg }}</button></td> -->
-  <!--  <div class="lis_btn no-print">
-    <button @click="changeDisplay2(1)" class="btn1" type="button"> Historiques des maintenances</button>
-    <button @click="changeDisplay2(3)" class="btn1" type="button">Faire une maintenance </button>
-    <button @click="changeDisplay2(2)" class="btn1" type="button">Faire un prélèvement </button>
 
-    <button @click="changeDisplay2(4)" class="btn1" type="button"> Historique des consommations</button>
-  </div> -->
-  <!-- Afficher la liste des maintenances -->
   <div v-if="$store.state.display_liste_maintenance" class="list-maintenance">
     <Entete class="entete" />
     <h4>Toutes les maintenances</h4>
@@ -122,7 +114,7 @@
             <option value="" disabled selected>-- Sélectionnez un équipement --</option>
             <option v-for="eq in listEquipements" :key="eq._id" :value="eq._id">{{ eq.nom }}</option>
           </select>
-          <span v-if="!isEquipementSelected" class="error-message">Ce champ est obligatoire.</span>
+
         </div>
 
         <div class="form-group">
@@ -411,6 +403,7 @@ export default {
 
     //Créer une maintenance
     async creerMaintenance(maintenanceData) {
+      console.log(this.nouvelle_maintenance)
       // Vérifier si tous les attributs sont renseignés
       if (
         !maintenanceData.equipement ||
@@ -443,14 +436,18 @@ export default {
         const id = this.last_maintenance._id
 
         localStorage.setItem("maintenance_en_cours", JSON.stringify([]))
+
         if (this.utiliser_consommable) {
           store.state.display_maintenance_form = false;
           store.state.display_consommation_form = true;
         } else if (this.ajuter_autres_depenses) {
+          this.changeDisplay2(1)
           console.log(this.last_maintenance)
 
           router.push({ name: 'AutresDepenses', params: { id } });
 
+        } else {
+          this.changeDisplay2(1)
         }
       } catch (error) {
         console.log(error);
@@ -464,9 +461,12 @@ export default {
     ,
     //Créer une consommabtion
     async creerConsommation(consommationData) {
+      consommationData.equipement = this.nouvelle_maintenance.equipement;
+      console.log(this.nouvelle_maintenance)
+
       // Vérifier si tous les attributs sont renseignés
       if (
-        // !consommationData.equipement ||
+        !consommationData.equipement ||
         !consommationData.consommable ||
         !consommationData.quantite ||
         !consommationData.date ||
@@ -483,7 +483,6 @@ export default {
         prenom: this.user.prenom,
         role: this.user.role
       }
-      this.nouvelle_consommation.equipement = this.nouvelle_maintenance.equipement;
 
       try {
         const data = await createConsommation(consommationData);
@@ -594,6 +593,7 @@ export default {
         if (this.user.role == "administrateur" || this.user.role == "gestionnaire") {
           store.state.display_liste_maintenance = false;
           store.state.display_consommation_form2 = false;
+          store.state.display_consommation_form = false;
           store.state.display_form = true;
           store.state.display_maintenance_form = true;
           store.state.display_historique = false;
@@ -615,7 +615,7 @@ export default {
 
     terminer() {
       Swal.fire({
-        title: 'Êtes-vous sûr de vouloir vous déconnecter ?',
+        title: 'Êtes-vous sûr de vouloir terminer ?',
         icon: 'question',
         showCancelButton: true,
         confirmButtonText: 'Confirmer',
@@ -624,6 +624,17 @@ export default {
         if (result.isConfirmed) {
           // L'utilisateur a cliqué sur le bouton de confirmation
           this.listMaintenanceWithAgregation = await getAllMaintenanceWithAgregation();
+          this.nouvelle_maintenance = {
+
+            date_entree: "",
+            date_sortie: "",
+            horametre: "",
+            anomalie: "",
+            operateur_maintenance: "",
+            // consommation:{}
+
+          }
+          this.consommation_en_cours = []
 
           this.changeDisplay2(1)
           localStorage.removeItem("maintenance_en_cours")

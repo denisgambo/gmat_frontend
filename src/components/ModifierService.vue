@@ -2,7 +2,7 @@
     <table border="1">
         <thead>
             <tr>
-                <th colspan="6">Ajouter un service</th>
+                <th colspan="6">Modifer un service</th>
             </tr>
 
         </thead>
@@ -10,15 +10,15 @@
             <tr>
 
                 <td>
-                    <form @submit.prevent="AjouterService(nouveau_service)">
+                    <form @submit.prevent="ModifService(service_modifier)">
                         <!-- <h2>Créer un service</h2> -->
                         <div class="mb-3">
                             <label for="exampleInputEmail1" class="form-label">Nom du service</label>
-                            <input type="text" v-model="nouveau_service.nom" class="form-control" id="nom"
+                            <input type="text" v-model="service_modifier.nom" class="form-control" id="nom"
                                 aria-describedby="Nom">
                             <div id="nom" class="form-text">Entrez le nom du service.</div>
                         </div>
-                        <button type="submit" class="btn btn-primary">Ajouter</button>
+                        <button type="submit" class="btn btn-primary">Modifier</button>
                     </form>
                 </td>
 
@@ -29,20 +29,25 @@
 </template>
 
 <script>
-import { createService } from '@/api/service'
+import { ModifierService } from '@/api/service'
 import Swal from 'sweetalert2'
 export default {
     name: "AjouterService",
+    props: ["service"],
     data() {
         return {
-            nouveau_service: {
-                nom: ""
+            service_modifier: {
+
             }
         }
     },
+    created() {
+        this.service_modifier = this.service
+        console.log(this.service_modifier)
+    },
     methods: {
-        async AjouterService(service) {
-            if (service.nom.length <= 2) {
+        async ModifService(service_modifier) {
+            if (service_modifier.nom.length <= 2) {
                 Swal.fire({
                     title: 'Erreur',
                     text: 'Le champ nom doit avoir au moins 3 caractères.',
@@ -52,18 +57,18 @@ export default {
             }
 
             try {
-                const response = await createService(service);
+                const response = await ModifierService(service_modifier._id, service_modifier);
                 Swal.fire({
                     title: 'Succès',
-                    text: 'Le service a été créé avec succès.',
+                    text: 'Le service a été modifié avec succès.',
                     icon: 'success',
                 });
-                this.nouveau_service.nom = "";
+                this.service_modifier.nom = "";
             } catch (error) {
                 console.log(error);
                 Swal.fire({
                     title: 'Erreur',
-                    text: 'Une erreur s\'est produite lors de la création du service.',
+                    text: 'Une erreur s\'est produite lors de la modification du service.',
                     icon: 'error',
                 });
             }

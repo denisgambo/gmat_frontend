@@ -47,9 +47,9 @@
                     <tr class="header">
                         <td>Equipement</td>
                         <td>Consommable</td>
-                        <td>Quantité de départ</td>
+                        <td>Quantité de départ stock</td>
                         <td>Quantité consommée</td>
-                        <td>Quantité restante</td>
+                        <td>Quantité restante stock</td>
                         <td>Horamètre</td>
                         <td>Date</td>
                         <td>Justification</td>
@@ -122,9 +122,9 @@
                     <tr class="header">
                         <td>Equipement</td>
                         <td>Consommable</td>
-                        <td>Quantité de départ</td>
+                        <td>Quantité de départ stock</td>
                         <td>Quantité consommée</td>
-                        <td>Quantité restante</td>
+                        <td>Quantité restante stock</td>
                         <td>Horamètre</td>
                         <td>Date</td>
                         <td>Justification</td>

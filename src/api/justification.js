@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'http://127.0.0.1:3000/justification';
+const API_URL = 'http://159.89.166.117:3000/justification';
 
 //Toutes les justifications
 async function getAllJustifications() {
@@ -35,4 +35,14 @@ async function supprimerJustification(id) {
   }
 }
 
-export { getAllJustifications, createJustification, supprimerJustification };
+async function ModifierJustification(id, justification) {
+    try {
+        const response = await axios.put(`${API_URL}/modifier/${id}`, justification);
+        return response.data;
+    } catch (error) {
+        console.log(error);
+        throw error;
+    }
+}
+
+export { getAllJustifications, createJustification, supprimerJustification, ModifierJustification };

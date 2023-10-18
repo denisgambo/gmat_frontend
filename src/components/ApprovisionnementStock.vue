@@ -79,11 +79,7 @@
                     <td>{{ new Date(eq.date_acquisition).toLocaleDateString() }}</td>
                     <td>{{ new Date(eq.date_mise_en_service).toLocaleDateString() }}</td>
                 </tr>
-                <!--   <tr>
-                    <td>
-                        <button @click="imprimerTableaux()">Imprimer</button>
-                    </td>
-                </tr> -->
+
 
             </table>
 
@@ -101,7 +97,7 @@
                 <table>
                     <tr class="header">
                         <td>
-                            <label for="description">Description</label>
+                            <label for="description">Réference commande</label>
                         </td>
                         <td>
                             <label for="date_commande">Date de commande</label>
@@ -115,7 +111,7 @@
                     <tr>
                         <td>
                             <textarea v-model="nouveau_approvisionnement.description" name="description"></textarea>
-                            <span class="error-message">Champ obligatoire.</span>
+                            <!-- <span class="error-message">Champ obligatoire.</span> -->
                         </td>
                         <td>
                             <input v-model="nouveau_approvisionnement.date_commande" class="commentaire" type="date" id=""
@@ -138,7 +134,9 @@
             </form>
 
 
-            <form action="#" method="POST" v-if="form_ligne_app">
+            <form
+                @submit.prevent="creerLigneAppro(ligne_approvisionnement, ligne_approvisionnement.consommable, ligne_approvisionnement.quantite)"
+                method="POST" v-if="form_ligne_app">
                 <h2>Remplir le formulaire d'approvisionnement</h2>
 
                 <!-- Affichage de l'approvisionnement en cours -->
@@ -177,7 +175,7 @@
                             <label for="consommable">Consommable</label>
                         </td>
                         <td>
-                            <label for="description">Description</label>
+                            <label for="description">Commentaire</label>
                         </td>
 
                         <td>
@@ -203,10 +201,11 @@
                                 <option v-for="conso in list_consommables" :key="conso._id" :value="conso._id">{{ conso.nom
                                 }}: {{ conso.quantite_en_stock }}</option>
                             </select>
-                            <span class="error-message">Champ obligatoire.</span>
+                            <!-- <span class="error-message">Champ obligatoire.</span> -->
                         </td>
                         <td>
-                            <textarea v-model="ligne_approvisionnement.description" name="description" id=""></textarea>
+                            <input type="text" name="description" v-model="ligne_approvisionnement.description">
+                            <!-- <textarea  ></textarea> -->
                         </td>
 
 
@@ -226,7 +225,7 @@
                                 disabled name="prix_unitaire">
                         </td>
                         <td>
-                            <select name="fournisseur" required v-model="ligne_approvisionnement.fournisseur">
+                            <select name="fournisseur" v-model="ligne_approvisionnement.fournisseur">
                                 <option value="" disabled selected>-- Sélectionnez --</option>
                                 <option v-for="f in list_fournisseurs" :key="f._id" :value="f._id">{{ f.nom }}</option>
                             </select>
@@ -237,8 +236,7 @@
                 </table>
 
                 <div class="form-group">
-                    <input type="submit" value="Ajouter" class="addappro"
-                        @click.prevent="creerLigneAppro(ligne_approvisionnement, ligne_approvisionnement.consommable, ligne_approvisionnement.quantite)">
+                    <input type="submit" value="Ajouter" class="addappro">
 
                     <input type="reset" value="Terminer" class="addappro" @click.prevent="terminer()">
 
@@ -273,7 +271,7 @@ export default {
             form_ligne_app: false,
             list_equipements: "",
             list_fournisseurs: "",
-            display_stock_consommable: false,
+            display_stock_consommable: true,
             display_stock_equipement: false,
             display_appro_form: false,
             display_historique_app: false,
@@ -287,7 +285,7 @@ export default {
 
             ligne_approvisionnement: {
                 consommable: "",
-                description: "",
+                description: "Achat",
                 fournisseur: "",
                 quantite: 1,
                 prix_unitaire: 1,
@@ -325,29 +323,36 @@ export default {
         },
 
         async creerApprovisionnement(donnees) {
+
+
             // Vérifier si tous les attributs sont renseignés
             if (
-                !donnees.description ||
-                !donnees.date_commande ||
-                !donnees.date_reception
+
+                !donnees.date_commande
+
             ) {
                 Swal.fire({
-                    title: 'Veuillez remplir tous les champs de l\'approvisionnement',
+                    title: 'La date de commande est obligatoire',
                     icon: 'error'
                 });
+
                 return;
             }
+
             donnees.utilisateur = {
                 nom: this.user.nom,
                 prenom: this.user.prenom,
                 role: this.user.role
             }
             try {
+
                 await createApprovisionnement(donnees);
+                console.log("test")
                 Swal.fire({
                     title: 'Enregistré avec succès',
                     icon: 'success'
                 });
+                console.log("testtt")
                 this.form_app = false;
                 this.form_ligne_app = true;
                 this.dernierApprovisionnement();
@@ -370,31 +375,28 @@ export default {
 
         async creerLigneAppro(donnees) {
             // Vérifier si tous les attributs sont renseignés
+
             if (
-                !donnees.consommable ||
-                !donnees.description ||
-                !donnees.fournisseur ||
-                !donnees.quantite ||
-                !donnees.prix_unitaire ||
-                !donnees.prix_totale ||
+                !donnees.consommable || !donnees.quantite || !donnees.prix_unitaire ||
                 !donnees.approvisionnement
             ) {
                 Swal.fire({
                     title: 'Veuillez remplir tous les champs de la ligne d\'approvisionnement',
                     icon: 'error'
                 });
+                console.log("Non réussi")
                 return;
             }
+
 
             try {
                 await createLigneApprovisionnement(donnees);
                 this.changeStock(donnees, 1);
-                // console.log(await this.findConsommableName(this.ligne_approvisionnement.consommable))
+
                 const en_cours = JSON.parse(localStorage.getItem("en_cours"))
                 en_cours.push(donnees)
                 localStorage.setItem("en_cours", JSON.stringify(en_cours))
-                // this.ligne_approvisionnement.consommable = ""
-                // console.log(this.list_appro)
+
 
                 this.list_appro = JSON.parse(localStorage.getItem("en_cours"));
 
@@ -404,7 +406,7 @@ export default {
                     title: 'Enregistré avec succès',
                     icon: 'success'
                 });
-                // this.ligne_approvisionnement = {};
+
             } catch (error) {
                 console.log(error);
             }

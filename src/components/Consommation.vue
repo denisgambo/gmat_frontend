@@ -91,7 +91,7 @@ import print from 'vue3-print-nb'
 
 import Swal from 'sweetalert2'
 import axios from 'axios';
-import { createConsommation } from '@/api/consommation';
+import { createConsommation, getLastConsommation } from '@/api/consommation';
 import { getCategoriesConsommable, getAllConsommables } from '../api/consommable'
 import { updateStock } from '@/api/approvisionnement';
 import { getAllEquipements } from '@/api/equipement';

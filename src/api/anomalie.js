@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'http://127.0.0.1:3000/anomalie';
+const API_URL = 'http://159.89.166.117:3000/anomalie';
 
 //Toutes les anomalies
 async function getAllAnomalies() {
@@ -35,4 +35,14 @@ async function supprimerAnomalie(id) {
   }
 }
 
-export { getAllAnomalies, createAnomalie, supprimerAnomalie };
+async function ModifierAnnomalie(id, annomalie) {
+    try {
+        const response = await axios.put(`${API_URL}/modifier/${id}`, annomalie);
+        return response.data;
+    } catch (error) {
+        console.log(error);
+        throw error;
+    }
+}
+
+export { getAllAnomalies, createAnomalie, supprimerAnomalie, ModifierAnnomalie };

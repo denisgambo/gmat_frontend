@@ -3,6 +3,7 @@
     :style="{ height: '100vh', backgroundImage: `url(${entreprise.background_image_accueil})`, backgroundSize: 'cover', marginTop: 0 }">
     <div>
       <h1>G-MAT</h1>
+      <small>Gestion de matériel</small>
     </div>
     <div class="tout">
       <div class="logo">
@@ -12,7 +13,7 @@
         <div v-if="entreprise">
           <div>
             <h2>{{ entreprise.nom }}</h2>
-            <!-- <small>{{ entreprise.slogan }}</small> -->
+
           </div>
         </div>
 
@@ -103,29 +104,7 @@ export default {
       }
     },
 
-    /*   async navigateToDashboard() {
-        console.log("Avant authentification", this.$store.getters.isAuthenticated);
-        console.log("Avant", this.$store.getters.utilisateur);
-        try {
-          await this.$store.dispatch('login', { login: this.localLogin, password: this.localPassword });
-  
-          // Vérifier l'état de l'authentification
-          if (this.$store.getters.isAuthenticated) {
-            // Utilisateur authentifié avec succès
-            console.log("Après authentification", this.$store.getters.isAuthenticated);
-            console.log("Après", this.$store.getters.utilisateur);
-  
-            const id = this.user._id;
-            this.$router.push({ name: 'TableauDeBord', params: { id } });
-          } else {
-            // Échec de l'authentification
-            this.avertissement("Login ou mot de passe incorrect");
-          }
-        } catch (error) {
-          console.log(error);
-          this.avertissement(error.message);
-        }
-      }, */
+
 
 
 
@@ -133,6 +112,7 @@ export default {
     async chargerEntreprise() {
       try {
         this.entreprise = await getEntreprise();
+        console.log(this.entreprise)
       } catch (error) {
         console.log(error)
       }
@@ -211,6 +191,7 @@ input:focus {
 
 .btn-submit {
   background-color: blue;
+  color: white;
   height: 30px;
   width: 25%;
   border-radius: 10px;

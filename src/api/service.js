@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'http://127.0.0.1:3000/service';
+const API_URL = 'http://159.89.166.117:3000/service';
 
 //Tous les services
 async function getAllServices() {
@@ -24,6 +24,16 @@ async function createService(service) {
     }
 }
 
+async function ModifierService(id, service) {
+    try {
+        const response = await axios.put(`${API_URL}/modifier/${id}`, service);
+        return response.data;
+    } catch (error) {
+        console.log(error);
+        throw error;
+    }
+}
+
 
 async function supprimerService(id) {
   try {
@@ -35,4 +45,4 @@ async function supprimerService(id) {
   }
 }
 
-export { getAllServices, createService, supprimerService };
+export { getAllServices, createService, supprimerService, ModifierService };

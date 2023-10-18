@@ -24,6 +24,7 @@
                         <td>
                             <button @click="removeService(service._id)" type="button"
                                 class="btn btn-danger">Supprimer</button>
+                            <button @click="modifier(service)" type="button" class="btn btn-danger">Modifier</button>
                         </td>
 
                     </tr>
@@ -32,6 +33,7 @@
         </div>
 
         <AjouterService v-if="display_service_form" />
+        <ModifierService :service="a_modifier" v-if="display_modifier" />
 
 
     </div>
@@ -42,17 +44,20 @@ import store from '@/store';
 
 import { getAllServices, supprimerService } from '@/api/service';
 import AjouterService from './AjouterService.vue';
+import ModifierService from './ModifierService.vue';
 import Swal from 'sweetalert2';
 export default {
     name: "Service",
     components: {
-        AjouterService
+        AjouterService, ModifierService
     },
     data() {
         return {
             list_services: "",
-            display_list_service: false,
-            display_service_form: false
+            a_modifier: {},
+            display_list_service: true,
+            display_service_form: false,
+            display_modifier: false,
         }
     },
     async created() {
@@ -60,6 +65,11 @@ export default {
     },
 
     methods: {
+        modifier(service) {
+            this.a_modifier = service
+            this.changeDisplay(3)
+
+        },
         async removeService(id) {
             Swal.fire({
                 title: "Supprimer le service ?",
@@ -93,9 +103,15 @@ export default {
             if (entree == 1) {
                 this.display_service_form = true;
                 this.display_list_service = false;
+                this.display_modifier = false
             } else if (entree == 2) {
                 this.display_service_form = false;
-                this.display_list_service = true
+                this.display_list_service = true;
+                this.display_modifier = false
+            } else if (entree == 3) {
+                this.display_service_form = false;
+                this.display_list_service = false;
+                this.display_modifier = true
             }
         }
     }

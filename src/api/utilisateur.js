@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'http://127.0.0.1:3000/user';
+const API_URL = 'http://159.89.166.117:3000/user';
 
 async function getAllUser() {
     try {
@@ -23,7 +23,7 @@ async function createUser(user) {
 
 async function supprimerUtilisateur(id) {
   try {
-    const response = await axios.delete(`http://127.0.0.1:3000/user/supprimer/${id}`); // Utiliser l'ID dans l'URL
+    const response = await axios.delete(`http://127.0.0.159.89.166.117:3000/user/supprimer/${id}`); // Utiliser l'ID dans l'URL
     return response.data;
   } catch (error) {
     console.log(error);
@@ -34,7 +34,7 @@ async function supprimerUtilisateur(id) {
 // Fonction pour bloquer ou débloquer un utilisateur
 async function autorisation(id, autoriser) {
   try {
-    const response = await axios.put(`http://127.0.0.1:3000/user/autorisation`, { id, autoriser });
+    const response = await axios.put(`http://159.89.166.117:3000/user/autorisation`, { id, autoriser });
     return response.data;
   } catch (error) {
     console.log(error);
@@ -44,7 +44,7 @@ async function autorisation(id, autoriser) {
 
 async function getUserById(id) {
   try {
-    const response = await axios.get(`http://127.0.0.1:3000/user/${id}`); // Utiliser l'ID dans l'URL
+    const response = await axios.get(`http://159.89.166.117:3000/user/${id}`); // Utiliser l'ID dans l'URL
     return response.data;
   } catch (error) {
     console.log(error);
@@ -55,7 +55,7 @@ async function getUserById(id) {
 
 async function updatePassword(passwordUpdateData) {
     try {
-        const response = await axios.put(`http://127.0.0.1:3000/user/updatepassword`, passwordUpdateData);
+        const response = await axios.put(`http://159.89.166.117:3000/user/updatepassword`, passwordUpdateData);
         return response.data.message;
     } catch (error) {
         console.log(error);

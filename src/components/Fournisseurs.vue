@@ -66,6 +66,7 @@ Je m'excuse encore une fois. Voici le code sous forme de script:
 <script>
 import { getAllFournisseur } from "@/api/fournisseur";
 import axios from "axios";
+import Swal from "sweetalert2";
 export default {
     name: "Fournisseurs",
     data() {
@@ -87,8 +88,12 @@ export default {
     methods: {
         async createFournisseur() {
             try {
-                const response = await axios.post("http://127.0.0.1:3000/fournisseur", this.fournisseur);
-                alert("Fournisseur créé avec succès");
+                const response = await axios.post("http://159.89.166.117:3000/fournisseur", this.fournisseur);
+                Swal.fire({
+                    title: 'Succès',
+                    text: 'Le fournisseur a été créé avec succès.',
+                    icon: 'success',
+                });
                 this.fournisseur = {
                     nom: "",
                     description: "",
@@ -97,7 +102,11 @@ export default {
                 };
             } catch (error) {
                 console.log(error);
-                alert("Erreur lors de la création du fournisseur");
+                Swal.fire({
+                    title: 'Erreur',
+                    text: 'Une erreur s\'est produite.',
+                    icon: 'error',
+                });
             }
         },
         changeDisplay(entree) {
