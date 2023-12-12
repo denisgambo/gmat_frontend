@@ -1,9 +1,11 @@
 <template>
     <div class="container">
-        <h2>Historique des consommations</h2>
+        <!-- <h2 class="titre">Historique des consommations</h2> -->
         <div class="lis_btn no-print">
-            <button @click="changeDisplay(1)" class="btn1" type="button">Historique par consommable </button>
-            <button @click="changeDisplay(2)" class="btn1" type="button">Historique par équipement </button>
+            <button @click="changeDisplay(1)" class="btn btn-secondary m-2" type="button">Historique par consommable
+            </button>
+            <button @click="changeDisplay(2)" class="btn btn-secondary m-2" type="button">Historique par équipement
+            </button>
 
         </div>
         <div class="historique_par_consommation" v-if="display_by_consommable">
@@ -11,14 +13,14 @@
                 <form action="" class="no-print">
                     <table border="1">
                         <thead>
-                            <th>Choisir un consommable</th>
+                            <!-- <td style="background-color: aqua;">Choisir un consommable</td> -->
                         </thead>
                         <tbody>
                             <tr>
                                 <td>
                                     <select v-model="consommable_choisi" name="consommable" id="" required
                                         @change="chargerConsommation(consommable_choisi)">
-                                        <option value="" disabled selected>-- Sélectionnez --</option>
+                                        <option value="" disabled selected>-- Sélectionnez un consommable --</option>
                                         <option v-for="cons in list_consommable" :key="cons._id" :value="cons._id">{{
                                             cons.nom
                                         }}</option>
@@ -42,18 +44,18 @@
                 </div>
                 <Entete class="entete" />
 
-                <table border="1">
+                <table border="1" class="bg-light">
 
-                    <tr class="header">
-                        <td>Equipement</td>
-                        <td>Consommable</td>
-                        <td>Quantité de départ stock</td>
-                        <td>Quantité consommée</td>
-                        <td>Quantité restante stock</td>
-                        <td>Horamètre</td>
-                        <td>Date</td>
-                        <td>Justification</td>
-                        <td v-if="display_auteur">Auteur</td>
+                    <tr>
+                        <th>Equipement</th>
+                        <th>Consommable</th>
+                        <th>Quantité de départ stock</th>
+                        <th>Quantité consommée</th>
+                        <th>Quantité restante stock</th>
+                        <th>Horamètre</th>
+                        <th>Date</th>
+                        <th>Justification</th>
+                        <th v-if="display_auteur">Auteur</th>
                     </tr>
 
                     <tbody>
@@ -65,7 +67,14 @@
                             <td>{{ hist.quantite_restante }}</td>
                             <td>{{ hist.hora }}</td>
                             <td>{{ new Date(hist.date).toLocaleDateString() }}</td>
-                            <td>{{ hist.description }}</td>
+                            <td>
+                                <ul>
+                                    <li v-for="desc in hist.description" :key="desc">
+                                        {{ desc }}
+                                    </li>
+                                </ul>
+
+                            </td>
 
                             <td v-if="display_auteur">{{ hist.utilisateur.prenom }} {{ hist.utilisateur.nom }}: {{
                                 hist.utilisateur.role }}
@@ -85,14 +94,14 @@
                 <form action="" class="no-print">
                     <table border="1">
                         <thead>
-                            <th>Choisir un équipement</th>
+                            <!-- <td style="background-color: aqua;">Choisir un équipement</td> -->
                         </thead>
                         <tbody>
                             <tr>
                                 <td>
                                     <select v-model="equipement_choisi" name="equipement" id="" required
                                         @change="chargerConsommationEq(equipement_choisi)">
-                                        <option value="" disabled selected>-- Sélectionnez --</option>
+                                        <option value="" disabled selected>-- Sélectionnez un équipement --</option>
                                         <option v-for="eq in list_equipements" :key="eq._id" :value="eq._id">{{
                                             eq.nom
                                         }}</option>
@@ -117,18 +126,18 @@
                 <!-- <button v-print="'#historique'">imprimer</button> -->
                 <Entete class="entete" />
 
-                <table border="1">
+                <table border="1" class="bg-light">
 
                     <tr class="header">
-                        <td>Equipement</td>
-                        <td>Consommable</td>
-                        <td>Quantité de départ stock</td>
-                        <td>Quantité consommée</td>
-                        <td>Quantité restante stock</td>
-                        <td>Horamètre</td>
-                        <td>Date</td>
-                        <td>Justification</td>
-                        <td v-if="display_auteur">Auteur</td>
+                        <th>Equipement</th>
+                        <th>Consommable</th>
+                        <th>Quantité de départ stock</th>
+                        <th>Quantité consommée</th>
+                        <th>Quantité restante stock</th>
+                        <th>Horamètre</th>
+                        <th>Date</th>
+                        <th>Justification</th>
+                        <th v-if="display_auteur">Auteur</th>
 
                     </tr>
 
@@ -141,7 +150,14 @@
                             <td>{{ hist.quantite_restante }}</td>
                             <td>{{ hist.hora }}</td>
                             <td>{{ new Date(hist.date).toLocaleDateString() }}</td>
-                            <td>{{ hist.description }}</td>
+                            <td>
+                                <ul>
+                                    <li v-for="desc in hist.description" :key="desc">
+                                        {{ desc }}
+                                    </li>
+                                </ul>
+
+                            </td>
 
                             <td v-if="display_auteur">{{ hist.utilisateur.prenom }} {{ hist.utilisateur.nom }}: {{
                                 hist.utilisateur.role }}
@@ -265,47 +281,27 @@ export default {
     display: none;
 }
 
-.container {
-    width: 80%;
-    margin: 0 auto;
-    padding: 20px;
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+th,
+td {
+    border: 1px solid #ddd;
+    padding: 5px;
+}
+
+th {
+    background-color: #f2f2f2;
 }
 
 form {
     width: 100%;
 }
 
-table {
-    border-collapse: collapse;
-    width: 80%;
-    background-color: white !important;
-    margin: 5px auto;
-    /* margin: 20px; */
-}
 
-td {
-    border: 1px solid black;
-    padding: 5px;
-}
 
-.header {
-    font-weight: bold;
-    background-color: lightgray !important;
-}
-
-th {
-    padding: 5px;
-}
-
-.btn1 {
-    background-color: rgb(146, 236, 146);
-    height: 50px;
-    width: 240px;
-    margin-left: 30px;
-    border-radius: 10px;
-    margin-bottom: 20px;
-
-}
 
 @media print {
     .no-print {

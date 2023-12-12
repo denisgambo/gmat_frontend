@@ -1,4 +1,7 @@
 <template>
+    <div class="bg-light">
+        <h2>Gestion des justications de prelèvement</h2>
+    </div>
     <div class="">
         <div class="lis_btn">
             <button class="btn btn-success" @click="changeDisplay(1)">Ajouter une justication</button>
@@ -6,7 +9,7 @@
         </div>
 
         <div class="list_animalies" v-if="display_list_justifications">
-            <table border="1" class="table">
+            <table border="1">
                 <thead>
                     <tr>
                         <th colspan="6">Liste des justifications</th>
@@ -22,12 +25,14 @@
                 <tbody>
                     <tr v-for="(justication, index) in justifications" :key="justication._id">
                         <td>{{ index + 1 }}</td>
-                        <td>{{ justication.titre }}</td>
-                        <td>{{ justication.description }}</td>
-                        <td>
+                        <td class="nom">{{ justication.titre }}</td>
+                        <td class="nom">{{ justication.description }}</td>
+                        <td class="d-flex">
+                            <button @click="modifier(justication)" type="button"
+                                class="btn btn-success btn1">Modifier</button>
                             <button @click="removeJustification(justication._id)" type="button"
-                                class="btn btn-danger">Supprimer</button>
-                            <button @click="modifier(justication)" type="button" class="btn btn-secondary">Modifier</button>
+                                class="btn btn-secondary btn1">Supprimer</button>
+
                         </td>
 
                     </tr>
@@ -63,8 +68,7 @@ export default {
     },
 
     async created() {
-        this.justifications = await getAllJustifications()
-        console.log(this.justifications)
+        this.chargerJustification()
     },
     methods: {
         changeDisplay(entree) {
@@ -74,7 +78,8 @@ export default {
                 this.display_mdofif = false
             } else if (entree == 2) {
                 this.display_justification_form = false;
-                this.display_list_justifications = true
+                this.display_list_justifications = true;
+                this.chargerJustification()
                 this.display_mdofif = false
             } else if (entree == 3) {
                 this.display_justification_form = false;
@@ -85,6 +90,9 @@ export default {
         modifier(justification) {
             this.a_modifier = justification
             this.changeDisplay(3)
+        },
+        async chargerJustification() {
+            this.justifications = await getAllJustifications()
         },
         async removeJustification(id) {
             Swal.fire({
@@ -129,7 +137,17 @@ table {
 th,
 td {
     border: 1px solid #ddd;
-    padding: 8px;
+    padding: 0px;
+}
+
+.nom {
+    text-align: left;
+    padding-left: 5px;
+}
+
+.btn1 {
+    margin: 10px;
+    width: 100px;
 }
 
 th {
@@ -144,7 +162,7 @@ th {
 }
 
 .btn {
-    margin: 20px;
+    margin: 10px;
 }
 
 .list_animalies {

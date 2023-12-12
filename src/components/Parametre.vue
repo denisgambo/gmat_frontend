@@ -1,9 +1,9 @@
 <template>
     <MenuBar />
-    <div class="bg-light">
+    <!-- <div class="bg-light">
         <h2>Paramètres</h2>
-    </div>
-    <div class="container">
+    </div> -->
+    <div class="container1">
         <div class="vertical">
             <nav class="navbar ">
                 <ul class="navbar-nav">
@@ -141,12 +141,15 @@ export default {
 </script>
 
 <style scoped>
-.container {
+.container1 {
+    margin-top: 120px;
     display: flex;
     height: 100vh;
+    width: 95%;
     /* La hauteur du container est de 100vh (100% de la hauteur de la fenêtre) */
 }
 
+/* / */
 .vertical {
     background-color: #f1f1f1;
     flex: 0 0 300px;
@@ -169,7 +172,7 @@ export default {
 }
 
 .components {
-    width: 50%;
+    width: 80%;
     margin: 10px auto;
 }
 </style>

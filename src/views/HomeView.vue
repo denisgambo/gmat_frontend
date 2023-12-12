@@ -18,11 +18,11 @@
         </div>
 
         <div class="form-group">
-          <input v-model="localLogin" type="text" placeholder="Identifiant"><br>
-          <input v-model="localPassword" type="password" placeholder="Mot de passe">
+          <input v-model="localLogin" type="text" placeholder="login" class="form-control"><br>
+          <input v-model="localPassword" type="password" placeholder="Mot de passe" class="form-control">
         </div>
 
-        <button type="button" class="btn-submit" @click="navigateToDashboard">Se connecter</button>
+        <button type="button" class=" btn btn-submit" @click="navigateToDashboard">Se connecter</button>
 
         <form>
 
@@ -129,7 +129,7 @@ export default {
     },
     async enregistrerConnexion(user_to_save) {
       try {
-        response = await createConnexion(user_to_save)
+        const response = await createConnexion(user_to_save)
         console.log(response.status)
       } catch (error) {
         console.log(error)
@@ -161,9 +161,10 @@ export default {
   margin-top: 0px;
 }
 
-/*   .logo{
-    margin-top: 0px;
-  } */
+.form-control {
+  width: 50%;
+  margin: 5px auto;
+}
 
 .logo {
   /* margin-top: 20px; */
@@ -179,11 +180,11 @@ export default {
   height: 75px;
 }
 
-input {
+/* input {
   margin-bottom: 20px;
   height: 25px;
   border-radius: 10px;
-}
+} */
 
 input:focus {
   outline: none;
@@ -192,7 +193,7 @@ input:focus {
 .btn-submit {
   background-color: blue;
   color: white;
-  height: 30px;
+  /* height: 30px; */
   width: 25%;
   border-radius: 10px;
   margin-bottom: 20px;

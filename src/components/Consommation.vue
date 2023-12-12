@@ -1,87 +1,96 @@
 <template>
-    <div class="container">
+    <!-- Création d'une nouvelle consommation -->
+    <div class="addconso">
 
-
-
-        <!-- Création d'une nouvelle consommation -->
-        <div class="addconso">
-            <form id="inscription-form" action="#" method="POST" v-if="display_consommation_form" class="addconso">
-                <h1>Faire un prelèvement</h1>
-                <table>
-                    <tr class="header">
-                        <td>
-                            <label for="equipement">Consommable concerné</label>
-                        </td>
-
-                        <td>
-                            <label for="equipement">Equipement concerné</label>
+        <form v-if="display_consommation_form" class="m-3">
+            <table border="1" class="bg-light">
+                <thead>
+                    <tr>
+                        <th colspan="2">Faire un prelèvement</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="col-auto">
+                            <label for="equipement">Equipement</label>
                         </td>
                         <td>
-                            <label for="quantite">Quantité utilisée</label>
-                        </td>
-
-                        <td>
-                            <label for="description">Justification </label>
-                        </td>
-                        <td>
-                            <label for="description">Horamètre </label>
-                        </td>
-
-                        <td>
-                            <label for="date">Date</label>
+                            <select class="form-control" v-model="nouvelle_consommation.equipement" name="equipement" id=""
+                                required>
+                                <option value="" disabled selected>-- Sélectionnez --</option>
+                                <option v-for="eq in listEquipements" :key="eq._id" :value="eq._id">{{ eq.nom }}
+                                </option>
+                            </select>
                         </td>
                     </tr>
-
                     <tr>
+                        <td class="col-auto">
+                            <label for="consommable">Consommable</label>
+                        </td>
                         <td>
-                            <select v-model="nouvelle_consommation.consommable" name="consommable" id="" required>
+
+
+                            <select class="form-control" v-model="nouvelle_consommation.consommable" name="consommable"
+                                id="" required>
                                 <option value="" disabled selected>-- Sélectionnez --</option>
                                 <option v-for="cons in listConsommable" :key="cons._id" :value="cons._id">{{ cons.nom }}: {{
                                     cons.quantite_en_stock }}
                                 </option>
                             </select>
-                            <span v-if="!isEquipementSelected" class="error-message">Champ obligatoire.</span>
                         </td>
-
-                        <td>
-                            <select v-model="nouvelle_consommation.equipement" name="equipement" id="" required>
-                                <option value="" disabled selected>-- Sélectionnez --</option>
-                                <option v-for="eq in listEquipements" :key="eq._id" :value="eq._id">{{ eq.nom }}
-                                </option>
-                            </select>
-                            <span v-if="!isEquipementSelected" class="error-message">Champ obligatoire.</span>
+                    </tr>
+                    <tr>
+                        <td class="col-auto">
+                            <label for="quantite">Quantité utilisée</label>
                         </td>
-                        <td>
-                            <input class="commentaire" type="number" v-model="nouvelle_consommation.quantite" id=""
+                        <td class="col-auto">
+                            <input class="form-control" type="number" v-model="nouvelle_consommation.quantite" id=""
                                 name="quantite">
                         </td>
+                    </tr>
 
-                        <td>
-                            <select v-model="nouvelle_consommation.description" name="description" id="" required>
+                    <tr>
+                        <td class="col-auto">
+                            <label for="description">Justification </label>
+                        </td>
+                        <td class="col-auto">
+                            <select class="form-control" v-model="nouvelle_consommation.description" name="description"
+                                id="" required multiple>
                                 <option value="" disabled selected>-- Sélectionnez --</option>
                                 <option v-for="just in justifications" :key="just._id" :value="just.titre">{{ just.titre }}
                                 </option>
                             </select>
                         </td>
-
-                        <td>
-                            <input class="commentaire" v-model="nouvelle_consommation.hora" type="number" id="" name="hora">
+                    </tr>
+                    <tr>
+                        <td class="col-auto">
+                            <label for="hora">Horamètre </label>
                         </td>
-
-                        <td>
-                            <input class="commentaire" v-model="nouvelle_consommation.date" type="date" id="" name="date">
+                        <td class="col-auto">
+                            <input class="form-control" v-model="nouvelle_consommation.hora" type="number" id=""
+                                name="hora">
                         </td>
                     </tr>
-                </table>
+                    <tr>
+                        <td class="col-auto">
+                            <label for="date">Date</label>
+                        </td>
+                        <td class="col-auto">
+                            <input class="form-control" v-model="nouvelle_consommation.date" type="date" id="" name="date">
+                        </td>
+                    </tr>
+
+
+                </tbody>
 
                 <div class="form-group">
-                    <input @click.prevent="creerConsommation(nouvelle_consommation)" type="submit" value="Ajouter">
+                    <input class="btn btn-primary m-3" @click.prevent="creerConsommation(nouvelle_consommation)"
+                        type="submit" value="Ajouter">
                 </div>
-            </form>
-        </div>
+            </table>
 
 
-
+        </form>
     </div>
 </template>
 
@@ -157,15 +166,55 @@ export default {
 
 
 
+        /*  async creerConsommation(consommationData) {
+             // Vérifier si tous les champs sont saisis
+             if (
+                 !consommationData.equipement ||
+                 !consommationData.consommable ||
+                 !consommationData.quantite ||
+                 !consommationData.date ||
+                 !consommationData.description
+             ) {
+                 Swal.fire({
+                     title: 'Veuillez remplir tous les champs de la consommation',
+                     icon: 'error'
+                 });
+                 return;
+             }
+ 
+             // Vérifier si la quantité est supérieure à 0
+             if (consommationData.quantite <= 0) {
+                 Swal.fire({
+                     title: 'La quantité doit être supérieure à 0',
+                     icon: 'error'
+                 });
+                 return;
+             }
+             consommationData.utilisateur = {
+                 nom: this.user.nom,
+                 prenom: this.user.prenom,
+                 role: this.user.role
+             }
+             try {
+                 const data = await createConsommation(consommationData);
+                 // console.log(data);
+                 this.changeStock(this.nouvelle_consommation, 0);
+                 Swal.fire({
+                     title: 'Enregistré avec succès',
+                     icon: 'success'
+                 });
+                 this.chargerMaintenanceWithAgregate();
+                 this.last_consommation = await getLastConsommation();
+                 // console.log("Nouvelle: ", this.nouvelle_consommation);
+                 // console.log(this.last_maintenance);
+                 await this.chargerConsommables()
+             } catch (error) {
+                 console.log(error);
+             }
+         } */
         async creerConsommation(consommationData) {
             // Vérifier si tous les champs sont saisis
-            if (
-                !consommationData.equipement ||
-                !consommationData.consommable ||
-                !consommationData.quantite ||
-                !consommationData.date ||
-                !consommationData.description
-            ) {
+            if (!consommationData.equipement || !consommationData.consommable || !consommationData.quantite || !consommationData.date || !consommationData.description) {
                 Swal.fire({
                     title: 'Veuillez remplir tous les champs de la consommation',
                     icon: 'error'
@@ -181,28 +230,51 @@ export default {
                 });
                 return;
             }
+
             consommationData.utilisateur = {
                 nom: this.user.nom,
                 prenom: this.user.prenom,
                 role: this.user.role
-            }
+            };
+
             try {
-                const data = await createConsommation(consommationData);
-                // console.log(data);
-                this.changeStock(this.nouvelle_consommation, 0);
-                Swal.fire({
-                    title: 'Enregistré avec succès',
-                    icon: 'success'
+                const result = await Swal.fire({
+                    title: 'Êtes-vous sûr de vouloir enregistrer ?',
+                    text: 'Voulez-vous vraiment créer cette consommation ?',
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Oui, enregistrer !',
+                    cancelButtonText: 'Annuler'
                 });
-                this.chargerMaintenanceWithAgregate();
-                this.last_consommation = await getLastConsommation();
-                // console.log("Nouvelle: ", this.nouvelle_consommation);
-                // console.log(this.last_maintenance);
-                await this.chargerConsommables()
+
+                if (result.isConfirmed) {
+                    const data = await createConsommation(consommationData);
+                    this.changeStock(this.nouvelle_consommation, 0);
+
+                    Swal.fire({
+                        title: 'Enregistré avec succès',
+                        icon: 'success'
+                    });
+
+                    // this.chargerMaintenanceWithAgregate();
+                    this.last_consommation = await getLastConsommation();
+                    await this.chargerConsommables();
+                } else {
+                    // L'utilisateur a annulé l'enregistrement
+                    console.log('L\'enregistrement de la consommation a été annulé.');
+                }
             } catch (error) {
                 console.log(error);
+                Swal.fire({
+                    title: 'Erreur',
+                    text: 'Une erreur s\'est produite lors de l\'enregistrement de la consommation.',
+                    icon: 'error'
+                });
             }
         }
+
         ,
 
 
@@ -283,33 +355,50 @@ export default {
 </script>
 
 <style scoped>
-/* .container {
-    width: 100%;
-    margin: 0 auto;
-    padding: 20px;
-    background: url("../assets/images/bacform.jpg");
-    background-size: cover;
+table {
+    border-collapse: collapse;
+    width: 80%;
+    margin: auto;
+}
+
+th,
+td {
+    border: 1px solid #ddd;
+    padding: 5px;
+}
+
+th {
+    background-color: #f2f2f2;
+}
+
+/* .contenu {
+    width: 80%;
+    justify-content: start;
 } */
 
-form {
+/* form {
     width: 100%;
     margin: 0 auto;
-    /* border: 1px blue solid; */
+} */
+
+.titre {
+    color: white;
 }
+
+
 
 h1 {
     text-align: center;
 }
 
-/* .form-group {
-    margin-bottom: 5px;
-} */
+
 
 label {
     display: block;
     font-weight: bold;
 }
 
+/* 
 input[type="text"],
 input[type="email"],
 input[type="password"],
@@ -321,16 +410,16 @@ textarea {
     border: 1px solid #f07777;
     border-radius: 4px;
     margin: 0 auto;
-}
+} */
 
-input[type="submit"] {
+/* input[type="submit"] {
     padding: 10px 20px;
     background-color: #4CAF50;
     color: #fff;
     border: none;
     border-radius: 4px;
     cursor: pointer;
-}
+} */
 
 input[type="submit"]:hover {
     background-color: #45a049;
@@ -341,52 +430,6 @@ input[type="submit"]:hover {
     margin-top: 5px;
 }
 
-.date {
-    display: flex;
-    justify-content: space-around;
-    border: 1px solid #ccc;
-    width: 90%;
-    margin-bottom: 20px;
-    margin: 0 auto;
-    width: 100%;
-    margin-bottom: 5px;
-}
-
-.select {
-    display: flex;
-    justify-content: space-around;
-    border: 1px solid #ccc;
-    width: 100%;
-    margin-bottom: 5px;
-}
-
-.code {
-    display: flex;
-    justify-content: space-around;
-    border: 1px solid #ccc;
-    width: 100%;
-    margin-bottom: 5px;
-}
-
-.code>input {
-    width: 50px;
-}
-
-
-table {
-    border-collapse: collapse;
-    width: 100%;
-}
-
-.addconso {
-    width: 100%;
-}
-
-td {
-    border: 1px solid black;
-    padding: 10px;
-    background-color: white;
-}
 
 .header {
     font-weight: bold;
@@ -396,22 +439,11 @@ td {
 
 
 
-.card {
-    margin: 10px;
-    border-radius: 10px;
-    background-color: rgba(0, 0, 0, 0.5);
-    color: white;
 
-}
 
-.card>img {
-    border-radius: 10px;
-}
 
-.list-categories {
-    display: flex;
-    flex-wrap: wrap;
-}
+
+
 
 @media print {
     .no-print {

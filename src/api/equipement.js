@@ -1,166 +1,15 @@
-import axios from 'axios';
+import axios from "axios";
 
-const API_URL = 'http://159.89.166.117:3000/categorie';
-const API_URL2 = 'http://159.89.166.117:3000/categorieconsommable';
+const API_URL = "http://159.89.166.117:3000";
 
-
-async function getCategories() {
-    try {
-        const response = await axios.get(`${API_URL}`);
-        return response.data;
-    } catch (error) {
-        console.log(error);
-        throw error;
-    }
+function getToken() {
+  const user = JSON.parse(localStorage.getItem("user"));
+  return user.token;
 }
 
-async function getCats() {
-    try {
-        const response = await axios.get(`${API_URL}/tous`);
-        return response.data;
-    } catch (error) {
-        console.log(error);
-        throw error;
-    }
-}
-
-async function getCatsCons() {
-    try {
-        const response = await axios.get(`${API_URL2}/tous`);
-        return response.data;
-    } catch (error) {
-        console.log(error);
-        throw error;
-    }
-}
-
-async function ModifierCatEq(id, cat) {
-    try {
-        const response = await axios.put(`${API_URL}/modifier/${id}`, cat);
-        return response.data;
-    } catch (error) {
-        console.log(error);
-        throw error;
-    }
-}
-async function ModifierCatCons(id, cat) {
-    try {
-        const response = await axios.put(`${API_URL2}/modifier/${id}`, cat);
-        return response.data;
-    } catch (error) {
-        console.log(error);
-        throw error;
-    }
-}
-
-async function getAllEquipements() {
-    try {
-        const response = await axios.get(`http://159.89.166.117:3000/equipement`);
-        return response.data;
-    } catch (error) {
-        console.log(error);
-        throw error;
-    }
-}
-
-
-//Nombre déquipements par catégorie
-
-async function NombreEquipementByCat() {
-    try {
-        const response = await axios.get(`http://159.89.166.117:3000/equipement/nbrequipementbycat`);
-        return response.data;
-    } catch (error) {
-        console.log(error);
-        throw error;
-    }
-}
-
-//Nombre déquipements par catégorie
-
-async function NombreEquipementByCatAndLoc() {
-    try {
-        const response = await axios.get(`http://159.89.166.117:3000/equipement/equipementswithcatandloc`);
-        return response.data;
-    } catch (error) {
-        console.log(error);
-        throw error;
-    }
-}
-
-async function NombreEquipementByCatAndLocIndispo() {
-    try {
-        const response = await axios.get(`http://159.89.166.117:3000/equipement/equipementindisponibles`);
-        return response.data;
-    } catch (error) {
-        console.log(error);
-        throw error;
-    }
-}
-
-async function getAllEquipementsWithCat() {
-    try {
-        const response = await axios.get(`http://159.89.166.117:3000/equipement/equipementswithcat`);
-        return response.data;
-    } catch (error) {
-        console.log(error);
-        throw error;
-    }
-}
-async function createCategorie(categorieData) {
-    try {
-        const response = await axios.post(`${API_URL}`, categorieData);
-        return response.data;
-    } catch (error) {
-        console.log(error);
-        throw error;
-    }
-}
-
-async function getEquipementByCategorie(categorieId) {
-    try {
-        const response = await axios.get(`http://159.89.166.117:3000/equipement/equipementscategorie?categorieId=${categorieId}`);
-        return response.data;
-    } catch (error) {
-        console.log(error);
-        throw error;
-    }
-}
-
-async function getAllLocalite() {
-    try {
-        const response = await axios.get(`http://159.89.166.117:3000/localisation`);
-        return response.data;
-    } catch (error) {
-        console.log(error);
-        throw error;
-    }
-}
-
-async function createEquipement(equipementData) {
-    try {
-        const response = await axios.post('http://159.89.166.117:3000/equipement', equipementData, { headers: { 'Content-Type': 'multipart/form-data' } });
-        return response.data;
-    } catch (error) {
-        console.log(error);
-        throw error;
-    }
-}
-// axios.put(`http://159.89.166.117:3000/equipement/${id}`
-//Modifier un équipement
-async function updateEquipement(id, equipementData) {
-    try {
-const response = await axios.put(`http://159.89.166.117:3000/equipement/${id}`, equipementData, { headers: { 'Content-Type': 'multipart/form-data' } });
- return response.data;
-    } catch (error) {
-        console.log(error);
-        throw error;
-    }
-}
-// Fonction pour mettre à jour la disponibilite
-async function updateDisponibilite(id, disponibilite) {
+async function supprimerCatEquipement(id) {
   try {
-    const response = await axios.put(`http://159.89.166.117:3000/equipement/updatedisponibilite`, { id, disponibilite });
+    const response = await axios.delete(`${API_URL}/supprimer/${id}`); // Utiliser l'ID dans l'URL
     return response.data;
   } catch (error) {
     console.log(error);
@@ -168,12 +17,357 @@ async function updateDisponibilite(id, disponibilite) {
   }
 }
 
+async function getCategories() {
+  const token = getToken();
+  const headers = {
+    Authorization: `Bearer ${token}`,
+    "Content-Type": "application/json",
+  };
+  try {
+    const response = await axios.get(`${API_URL}/categorie`, {
+      headers: headers,
+    });
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+}
+
+async function getCats() {
+  const token = getToken();
+  const headers = {
+    Authorization: `Bearer ${token}`,
+    "Content-Type": "application/json",
+  };
+  try {
+    const response = await axios.get(`${API_URL}/categorie/tous`, {
+      headers: headers,
+    });
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+}
+
+async function getCatsCons() {
+  const token = getToken();
+  const headers = {
+    Authorization: `Bearer ${token}`,
+    "Content-Type": "application/json",
+  };
+  try {
+    const response = await axios.get(`${API_URL}/categorieconsommable/tous`, {
+      headers: headers,
+    });
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+}
+
+async function ModifierCatEq(id, cat) {
+  const token = getToken();
+  const headers = {
+    Authorization: `Bearer ${token}`,
+    "Content-Type": "application/json",
+  };
+  try {
+    const response = await axios.put(
+      `${API_URL}/categorie/modifier/${id}`,
+      cat,
+      {
+        headers: headers,
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+}
+async function ModifierCatCons(id, cat) {
+  const token = getToken();
+  const headers = {
+    Authorization: `Bearer ${token}`,
+    "Content-Type": "application/json",
+  };
+  try {
+    const response = await axios.put(
+      `${API_URL}/categorieconsommable/modifier/${id}`,
+      cat,
+      {
+        headers: headers,
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+}
+
+async function getAllEquipements() {
+  const token = getToken();
+  const headers = {
+    Authorization: `Bearer ${token}`,
+    "Content-Type": "application/json",
+  };
+  try {
+    const response = await axios.get(`${API_URL}/equipement`, {
+      headers: headers,
+    });
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+}
+
+//equipements au rebut
+
+async function getAllEquipementsAuRebut() {
+  const token = getToken();
+  const headers = {
+    Authorization: `Bearer ${token}`,
+    "Content-Type": "application/json",
+  };
+  try {
+    const response = await axios.get(`${API_URL}/equipement/au_rebut`, {
+      headers: headers,
+    });
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+}
+
+//Nombre déquipements par catégorie
+
+async function NombreEquipementByCat() {
+  const token = getToken();
+  const headers = {
+    Authorization: `Bearer ${token}`,
+    "Content-Type": "application/json",
+  };
+  try {
+    const response = await axios.get(
+      `${API_URL}/equipement/nbrequipementbycat`,
+      {
+        headers: headers,
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+}
+
+//Nombre déquipements par catégorie
+
+async function NombreEquipementByCatAndLoc() {
+  const token = getToken();
+  const headers = {
+    Authorization: `Bearer ${token}`,
+    "Content-Type": "application/json",
+  };
+  try {
+    const response = await axios.get(
+      `${API_URL}/equipement/equipementswithcatandloc`,
+      {
+        headers: headers,
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+}
+
+async function NombreEquipementByCatAndLocIndispo() {
+  const token = getToken();
+  const headers = {
+    Authorization: `Bearer ${token}`,
+    "Content-Type": "application/json",
+  };
+  try {
+    const response = await axios.get(
+      `${API_URL}/equipement/equipementindisponibles`,
+      {
+        headers: headers,
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+}
+
+async function getAllEquipementsWithCat() {
+  const token = getToken();
+  const headers = {
+    Authorization: `Bearer ${token}`,
+    "Content-Type": "application/json",
+  };
+  try {
+    const response = await axios.get(
+      `${API_URL}/equipement/equipementswithcat`,
+      {
+        headers: headers,
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+}
+async function createCategorie(categorieData) {
+  const token = getToken();
+  const headers = {
+    Authorization: `Bearer ${token}`,
+    "Content-Type": "application/json",
+  };
+  try {
+    const response = await axios.post(`${API_URL}/categorie`, categorieData, {
+      headers: headers,
+    });
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+}
+
+async function getEquipementByCategorie(categorieId) {
+  const token = getToken();
+  const headers = {
+    Authorization: `Bearer ${token}`,
+    "Content-Type": "application/json",
+  };
+  try {
+    const response = await axios.get(
+      `${API_URL}/equipement/equipementscategorie?categorieId=${categorieId}`,
+      {
+        headers: headers,
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+}
+
+async function getAllLocalite() {
+  const token = getToken();
+  const headers = {
+    Authorization: `Bearer ${token}`,
+    "Content-Type": "application/json",
+  };
+  try {
+    const response = await axios.get(
+      `http://159.89.166.117:3000/localisation`,
+      {
+        headers: headers,
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+}
+
+async function createEquipement(equipementData) {
+  const token = getToken();
+  const headers = {
+    Authorization: `Bearer ${token}`,
+    "Content-Type": "multipart/form-data",
+  };
+  try {
+    const response = await axios.post(
+      "${API_URL}/equipement",
+      equipementData,
+
+      {
+        headers: headers,
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+}
+// axios.put(`http://159.89.166.117:3000/equipement/${id}`
+//Modifier un équipement
+async function updateEquipement(id, equipementData) {
+  const token = getToken();
+  const headers = {
+    "Content-Type": "multipart/form-data",
+    Authorization: `Bearer ${token}`,
+  };
+  try {
+    const response = await axios.put(
+      `${API_URL}/equipement/${id}`,
+      equipementData,
+      {
+        headers: headers,
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+}
+// Fonction pour mettre à jour la disponibilite
+async function updateDisponibilite(id, disponibilite) {
+  const token = getToken();
+  const headers = {
+    Authorization: `Bearer ${token}`,
+    "Content-Type": "application/json",
+  };
+  try {
+    const response = await axios.put(
+      `${API_URL}/equipement/updatedisponibilite`,
+      {
+        id,
+        disponibilite,
+      },
+      {
+        headers: headers,
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+}
 
 // supprimer un équipement
 // supprimer un équipement
 async function supprimerEquipement(id) {
+  const token = getToken();
+  const headers = {
+    Authorization: `Bearer ${token}`,
+    "Content-Type": "application/json",
+  };
   try {
-    const response = await axios.delete(`http://159.89.166.117:3000/equipement/supprimer/${id}`); // Utiliser l'ID dans l'URL
+    const response = await axios.delete(
+      `${API_URL}/equipement/supprimer/${id}`,
+      {
+        headers: headers,
+      }
+    ); // Utiliser l'ID dans l'URL
     return response.data;
   } catch (error) {
     console.log(error);
@@ -182,8 +376,34 @@ async function supprimerEquipement(id) {
 }
 
 async function getEquipementById(id) {
+  const token = getToken();
+  const headers = {
+    Authorization: `Bearer ${token}`,
+    "Content-Type": "application/json",
+  };
   try {
-    const response = await axios.get(`http://159.89.166.117:3000/equipement/${id}`); // Utiliser l'ID dans l'URL
+    const response = await axios.get(`${API_URL}/${id}`, {
+      headers: headers,
+    }); // Utiliser l'ID dans l'URL
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+}
+async function supprimerCategorieEq(id) {
+  const token = getToken();
+  const headers = {
+    Authorization: `Bearer ${token}`,
+    "Content-Type": "application/json",
+  };
+  try {
+    const response = await axios.delete(
+      `${API_URL}/categorie/supprimer/${id}`,
+      {
+        headers: headers,
+      }
+    ); // Utiliser l'ID dans l'URL
     return response.data;
   } catch (error) {
     console.log(error);
@@ -191,6 +411,35 @@ async function getEquipementById(id) {
   }
 }
 
+/* async function supprimerCategoriCons(id) {
+  try {
+    const response = await axios.delete(`${API_URL}/supprimer/${id}`); // Utiliser l'ID dans l'URL
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+} */
 
-
-export { getCategories, getEquipementByCategorie, getAllLocalite, createEquipement, createCategorie, getAllEquipements, getAllEquipementsWithCat, NombreEquipementByCat,NombreEquipementByCatAndLoc, NombreEquipementByCatAndLocIndispo , updateDisponibilite, supprimerEquipement, getEquipementById, updateEquipement,getCats, getCatsCons, ModifierCatEq, ModifierCatCons};
+export {
+  getCategories,
+  getEquipementByCategorie,
+  getAllLocalite,
+  createEquipement,
+  createCategorie,
+  getAllEquipements,
+  getAllEquipementsWithCat,
+  NombreEquipementByCat,
+  NombreEquipementByCatAndLoc,
+  NombreEquipementByCatAndLocIndispo,
+  updateDisponibilite,
+  supprimerEquipement,
+  getEquipementById,
+  updateEquipement,
+  getCats,
+  getCatsCons,
+  ModifierCatEq,
+  ModifierCatCons,
+  getAllEquipementsAuRebut,
+  supprimerCategorieEq,
+};

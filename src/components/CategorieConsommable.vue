@@ -1,5 +1,6 @@
 <template>
     <div class="container">
+
         <div v-if="display_list">
             <table border="1">
                 <thead>
@@ -21,7 +22,11 @@
                         <td>{{ cat.description }}</td>
                         <td>
 
-                            <button type="button" class="btn btn-danger" @click="modifier(cat)">Modifier</button>
+                            <div class="d-flex">
+                                <button type="button" class="btn btn-success m-2" @click="modifier(cat)">Modifier</button>
+                                <button type="button" class="btn btn-secondary m-2"
+                                    @click="supprimer(cat._id)">Supprimer</button>
+                            </div>
                         </td>
 
                     </tr>
@@ -51,6 +56,7 @@
 
 <script>
 import Swal from 'sweetalert2';
+import { supprimerCategoriCons } from '@/api/consommable';
 import { getCatsCons, ModifierCatCons } from '@/api/equipement';
 export default {
     name: "CategorieConsommable",
@@ -79,6 +85,48 @@ export default {
             this.a_modifier = cat
             this.switchDisplay(2)
         },
+        /*    supprimer(id) {
+               try {
+                   const response = supprimerCategoriCons(id)
+               } catch (error) {
+                   console.log(error)
+               }
+           }, */
+        async supprimer(id) {
+            try {
+                const result = await Swal.fire({
+                    title: 'Êtes-vous sûr ?',
+                    text: 'Voulez-vous vraiment supprimer cet élément ?',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Oui, supprimer !',
+                    cancelButtonText: 'Annuler'
+                });
+
+                if (result.isConfirmed) {
+                    // Appel à votre fonction de suppression (supprimerCategorieEq()) ici
+                    const response = await supprimerCategoriCons(id);
+
+                    // Affichage d'un message de succès après la suppression réussie
+                    Swal.fire({
+                        title: 'Supprimé !',
+                        text: 'L\'élément a été supprimé avec succès.',
+                        icon: 'success',
+                        timer: 2000, // Durée d'affichage du message de succès en millisecondes (2 secondes ici)
+                        timerProgressBar: true,
+                        showConfirmButton: false
+                    });
+                    this.chargerCat()
+
+                    console.log(response); // Afficher la réponse de la suppression dans la console si nécessaire
+                }
+            } catch (error) {
+                console.error(error);
+            }
+        },
+
 
         async validerModification() {
             try {
@@ -121,26 +169,11 @@ table {
 th,
 td {
     border: 1px solid #ddd;
-    padding: 8px;
+    padding: 5px;
 }
 
 th {
     background-color: #f2f2f2;
-}
-
-.lis_btn {
-    /* display: flex; */
-    width: 100%;
-    /* position: fixed; */
-
-}
-
-.btn {
-    margin: 20px;
-}
-
-.list_service {
-    margin: 20px;
 }
 </style>
 

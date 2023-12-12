@@ -2,14 +2,13 @@
     <div class="container">
         <!-- formulaire pour Modifier un equipement -->
 
-        <form id="inscription-form" action="#" method="POST"
+        <!--  <form id="inscription-form" action="#" method="POST"
             @submit.prevent="ModifierConsommable(id, consommable_a_modifier)" enctype="multipart/form-data">
             <h3>Modifier un consommable</h3>
             <div class="select">
                 <div class="form-group">
                     <label for="categorie">Catégorie</label>
                     <select v-model="consommable_a_modifier.categorie" name="categorie" id="">
-                        <!-- <option value="">Pas de catégorie</option> -->
                         <option v-for="cat in list_categorie" :key="cat._id" :value="cat._id">{{ cat.nom }}</option>
                     </select>
                 </div>
@@ -24,10 +23,7 @@
                 <textarea v-model="consommable_a_modifier.description" id="description" name="description"></textarea>
             </div>
 
-            <!-- <div class="form-group">
-                <label for="prix_achat">Prix d'achat</label>
-                <input v-model="consommable_a_modifier.prix_achat" type="number" id="" name="prix_achat" disabled>
-            </div> -->
+
             <div class="form-group">
                 <label for="image_consommable">Image</label>
                 <input type="file" id="image_consommable" @change="handleFileChange" name="image_consommable">
@@ -37,11 +33,7 @@
                 <textarea v-model="consommable_a_modifier.observation" id="observation" name="observation"></textarea>
             </div>
             <div class="date">
-                <!-- <div class="form-group">
-                    <label for="quantite_en_stock">Quantité en stock</label>
-                    <input v-model.number="consommable_a_modifier.quantite_en_stock" type="number" id=""
-                        name="quantite_en_stock" disabled>
-                </div> -->
+
                 <div class="form-group">
                     <label for="seuil_critique">Seuil critique</label>
                     <input v-model.number="consommable_a_modifier.seuil_critique" type="number" id="" name="seuil_critique">
@@ -63,7 +55,108 @@
             </div>
         </form>
 
+ -->
+        <form id="inscription-form" action="#" method="POST"
+            @submit.prevent="ModifierConsommable(id, consommable_a_modifier)" enctype="multipart/form-data">
+            <table border="1" class="justify-content-center">
+                <tbody>
+                    <tr>
+                        <th colspan="2">
+                            <h3>Modification du consommable</h3>
+                        </th>
+                    </tr>
+                    <tr>
+                        <td class="col-auto">
+                            <label for="categorie">Catégorie</label>
+                        </td>
+                        <td colspan="2" class="col-auto">
 
+                            <div class="form-group">
+                                <select v-model="consommable_a_modifier.categorie" name="categorie" class="form-control">
+                                    <option value="">Choisir la catégorie</option>
+                                    <option v-for="cat in list_categorie" :key="cat._id" :value="cat._id">{{ cat.nom }}
+                                    </option>
+                                </select>
+                            </div>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-auto">
+                            <label for="nom">Nom du consommable</label>
+                        </td>
+                        <td>
+                            <input v-model="consommable_a_modifier.nom" type="text" class="form-control" id="nom" name="nom"
+                                required>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-auto">
+                            <label for="description">Description</label>
+                        </td>
+                        <td>
+                            <textarea v-model="consommable_a_modifier.description" class="form-control" id="description"
+                                name="description"></textarea>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-auto">
+                            <label for="image_consommable">Image</label>
+                        </td>
+                        <td>
+                            <input type="file" class="form-control" id="image_consommable" @change="handleFileChange"
+                                name="image_consommable">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-auto">
+                            <label for="observation">Observation</label>
+                        </td>
+                        <td>
+                            <textarea v-model="consommable_a_modifier.observation" class="form-control" id="observation"
+                                name="observation"></textarea>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-auto">
+                            <label for="seuil_critique">Seuil critique</label>
+
+                        </td>
+
+                        <td colspan="2">
+                            <div class="form-group">
+                                <input v-model="consommable_a_modifier.seuil_critique" type="number" class="form-control"
+                                    id="seuil_critique" name="seuil_critique">
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <div class="code">
+                                <div class="form-group">
+                                    <label for="code_qr">Code QR</label>
+                                    <input v-model="consommable_a_modifier.code_qr" type="text" class="form-control"
+                                        id="code_qr" name="code_qr">
+                                </div>
+                                <div class="form-group">
+                                    <label for="code_bar">Code bar</label>
+                                    <input v-model="consommable_a_modifier.code_bar" type="text" class="form-control"
+                                        id="code_bar" name="code_bar">
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" class="text-center">
+                            <div class="form-group">
+                                <input type="submit" value="Modifier" class="btn btn-success m-2">
+                                <input type="submit" value="Retour" @click.prevent="retour" class="btn btn-success m-2">
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </form>
     </div>
 </template>
 
@@ -191,19 +284,24 @@ export default {
 </script>
 
 <style scoped>
-.container {
+table {
+    border-collapse: collapse;
     width: 100%;
-    margin: 0 auto;
-    padding: 20px;
-    background: url("../assets/images/bacform.jpg");
-    background-size: cover;
 }
 
-form {
-    width: 80%;
-    margin: 0 auto;
-    border: 1px blue solid;
+th,
+td {
+    border: 1px solid #ddd;
+    padding: 5px;
 }
+
+th {
+    background-color: #f2f2f2;
+}
+
+
+
+
 
 h1 {
     text-align: center;
@@ -218,35 +316,13 @@ label {
     font-weight: bold;
 }
 
-input[type="text"],
-input[type="email"],
-input[type="password"],
-input[type="number"],
 
-textarea {
-    width: 80%;
-    padding: 1px;
-    border: 1px solid #f07777;
-    border-radius: 4px;
-    margin: 0 auto;
-}
-
-input[type="submit"] {
-    padding: 10px 20px;
-    background-color: #4CAF50;
-    color: #fff;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-}
 
 input[type="submit"]:hover {
     background-color: #45a049;
 }
 
-.space {
-    margin: 10px;
-}
+
 
 .date {
     display: flex;

@@ -8,13 +8,16 @@
       <router-link to="/stock-critique" class="voir">Voir la liste</router-link>
 
     </div>
+
     <div class="single-categorie" v-for="categorie in listCategoriesConsommables" :key="categorie._id">
       <h2>{{ categorie.nom }}</h2>
+      <h2 v-if="tous_les_consommables">Nombre: {{ categorie.nombre_consommables
+      }}</h2>
       {{ categorie.description }} <br>
 
-      <button class="voir" type="button" @click="chargerConsommables(categorie._id)"> Voir les
-        consommables</button>
+      <button class="voir" type="button" @click="chargerConsommables(categorie._id)"> Voir les consommables</button>
     </div>
+
   </div>
 
   <div class="list-equipement" v-if="displayConsommableByCategorie">
@@ -41,38 +44,12 @@
       </tbody>
     </table>
     <hr>
-    <!-- <div class="list-maintenance">
-              <table border="1">
-                <thead >
-                  <tr>
-                    <th>Equipement</th>
-                    <th>Anomalie</th>
-                    <th>Consommation</th>
-                    <th>Horamètre</th>
-                    <th>Maintenancier</th>
-                    <th>Date d'entrée</th>
-                    <th>Date de sortie</th>
-                    <th></th>
-                  </tr>
-                </thead>
 
-                <tbody>
-                  <tr v-for="consommable in listConsommablesByCategorie" :key="consommable._id">
-                    <td>{{ consommable.nom }}</td>
-                    <td>{{ consommable.description }}</td>
-                      <td>{{ consommable.prix_achat }}</td>
-                    <td>{{ consommable.quantite_en_stock }}</td>
-                    <td>{{ consommable.observation }}</td>
-                    <td><button>Maintenance</button></td>
-                  </tr>
-                </tbody>
-              </table>
-            </div> -->
   </div>
 </template>
 
 <script>
-import { getCategoriesConsommable, getConsommableByCategorie, getConsommablesCritique } from '../api/consommable'
+import { getCategoriesConsommable, getConsommableByCategorie, getConsommablesCritique, getAllConsommables } from '../api/consommable'
 
 export default {
   name: 'Consommable',
@@ -85,6 +62,7 @@ export default {
       displayConsommableByCategorie: false,
       displayCategoriesConsommable: true,
       consommables_seuil_critique: "",
+      tous_les_consommables: []
 
 
     }
@@ -93,6 +71,7 @@ export default {
   async created() {
     this.chargerCategoriesConsommable();
     this.consommables_seuil_critique = await getConsommablesCritique()
+    this.chargerTousConsommables()
   },
 
   methods: {
@@ -104,17 +83,41 @@ export default {
         console.log(error)
       }
     },
+    async chargerTousConsommables() {
+      try {
+        this.tous_les_consommables = await getAllConsommables();
+        // console.log("tous", this.tous_les_consommables);
+      } catch (error) {
+        console.log(error)
+      }
+    },
 
     async chargerConsommables(categorieConsommableId) {
       try {
         this.listConsommablesByCategorie = await getConsommableByCategorie(categorieConsommableId);
-        console.log(this.listConsommablesByCategorie);
+        console.log("parcat: ", this.listConsommablesByCategorie);
         this.displayConsommableByCategorie = true;
         this.displayCategoriesConsommable = false;
       } catch (error) {
         console.log(error)
       }
     },
+    // nombrCons(id) {
+    //   const consommablesFiltres = this.tous_les_consommables.filter((cons) => {
+    //     return cons._id == id;
+    //   });
+    //   console.log("filtres", consommablesFiltres)
+    //   return consommablesFiltres.length; // Retourne la longueur du tableau filtré
+    // },
+    // nombrCons(id) {
+    //   // Utilisez une vérification de type strict (avec ===) pour l'ID
+
+    //   const consommablesFiltres = this.tous_les_consommables.filter((cons) => {
+    //     return cons._id === id;
+    //   });
+    //   console.log("filtres", consommablesFiltres);
+    //   return consommablesFiltres.length;
+    // }
 
 
     back() {

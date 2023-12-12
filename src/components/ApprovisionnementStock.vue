@@ -2,14 +2,17 @@
     <div class="menu">
         <MenuBar />
     </div>
-
     <div class="container">
-        <div class="lis_btn">
-            <button @click="ChangeDisplay(1)" class="btn" type="button"> Stock des consommables</button>
-            <button @click="ChangeDisplay(3)" class="btn" type="button"> Liste des équipements</button>
 
-            <button @click="ChangeDisplay(2)" class="btn" type="button"> Faire un approvisionnement</button>
-            <button @click="ChangeDisplay(4)" class="btn" type="button"> Historique des approvisionnements</button>
+        <div class="lis_btn">
+            <button @click="ChangeDisplay(1)" class="btn btn1 btn-success m-2" type="button"> Stock des
+                consommables</button>
+            <!--   <button @click="ChangeDisplay(3)" class="btn btn1 btn-success m-2" type="button"> Liste des équipements</button> -->
+
+            <button @click="ChangeDisplay(2)" class="btn btn1 btn-success m-2" type="button"> Faire un
+                approvisionnement</button>
+            <!--    <button @click="ChangeDisplay(4)" class="btn btn1 btn-success m-2" type="button"> Historique des
+                approvisionnements</button> -->
         </div>
 
 
@@ -17,15 +20,15 @@
             <Entete class="entete" />
 
             <h2>Stock des consommables</h2>
-            <button @click="imprimerTableaux()">Imprimer</button>
-            <table>
-                <tr class="header">
-                    <td>Consommables</td>
+            <button class="btn btn-sm btn-secondary m-2" @click="imprimerTableaux()">Imprimer</button>
+            <table class="bg-light">
+                <tr>
+                    <th>Consommables</th>
 
-                    <td>Quantité en stock</td>
-                    <td>Prix d'achat</td>
-                    <td>Description</td>
-                    <td>Fournisseur</td>
+                    <th>Quantité en stock</th>
+                    <th>Prix d'achat</th>
+                    <th>Description</th>
+                    <th>Fournisseur</th>
                 </tr>
                 <tr v-for="cons in list_consommables" :key="cons._id">
                     <td>{{ cons.nom }}</td>
@@ -33,13 +36,9 @@
                     <td>{{ cons.quantite_en_stock }}</td>
                     <td>{{ cons.prix_achat }}</td>
                     <td>{{ cons.description }}</td>
-                    <td>{{ cons.Fournisseur }}</td>
+                    <td>{{ cons.fournisseur }}</td>
                 </tr>
-                <!--    <tr>
-                    <td>
-                        <button @click="imprimerTableaux()">Imprimer</button>
-                    </td>
-                </tr> -->
+
 
             </table>
 
@@ -49,21 +48,21 @@
             <Entete class="entete" />
             <h2>Listes des équipements</h2>
 
-            <button @click="imprimerTableaux()">Imprimer</button>
+            <button class="btn btn-sm btn-secondary m-2" @click="imprimerTableaux()">Imprimer</button>
             <table>
 
-                <tr class="header">
+                <tr>
 
-                    <td>Equipement</td>
-                    <td>Catégorie</td>
-                    <td>Description</td>
-                    <td>Localité</td>
-                    <td>Référence</td>
-                    <td>Observation</td>
-                    <td>Fournisseur</td>
-                    <td>Disponibilité</td>
-                    <td>Date d'acquisition</td>
-                    <td>Date de mise en service</td>
+                    <th>Equipement</th>
+                    <th>Catégorie</th>
+                    <th>Description</th>
+                    <th>Localité</th>
+                    <th>Référence</th>
+                    <th>Observation</th>
+                    <th>Fournisseur</th>
+                    <th>Disponibilité</th>
+                    <th>Date d'acquisition</th>
+                    <th>Date de mise en service</th>
                 </tr>
                 <tr v-for="eq in list_equipements" :key="eq._id">
                     <td>{{ eq.nom }}</td>
@@ -96,55 +95,54 @@
                 <h2>Faire un approvisionnement de stock</h2>
                 <table>
                     <tr class="header">
-                        <td>
+                        <th>
                             <label for="description">Réference commande</label>
-                        </td>
-                        <td>
+                        </th>
+                        <th>
                             <label for="date_commande">Date de commande</label>
-                        </td>
+                        </th>
 
-                        <td>
+                        <th>
                             <label for="date_reception">Date de reception </label>
-                        </td>
+                        </th>
                     </tr>
 
                     <tr>
                         <td>
-                            <textarea v-model="nouveau_approvisionnement.description" name="description"></textarea>
+                            <textarea class="form-control" v-model="nouveau_approvisionnement.description"
+                                name="description"></textarea>
                             <!-- <span class="error-message">Champ obligatoire.</span> -->
                         </td>
                         <td>
-                            <input v-model="nouveau_approvisionnement.date_commande" class="commentaire" type="date" id=""
-                                name="date_commande">
+                            <input cl v-model="nouveau_approvisionnement.date_commande" class="form-control" type="date"
+                                id="" name="date_commande">
                         </td>
 
 
 
                         <td>
-                            <input v-model="nouveau_approvisionnement.date_reception" class="commentaire" type="date" id=""
+                            <input v-model="nouveau_approvisionnement.date_reception" class="form-control" type="date" id=""
                                 name="date_reception">
                         </td>
                     </tr>
                 </table>
 
                 <div class="form-group">
-                    <input type="submit" value="Ajouter" class="addappro"
+                    <input type="submit" value="Ajouter" class="btn btn-success m-2"
                         @click.prevent="creerApprovisionnement(nouveau_approvisionnement, user)">
                 </div>
             </form>
 
 
-            <form
-                @submit.prevent="creerLigneAppro(ligne_approvisionnement, ligne_approvisionnement.consommable, ligne_approvisionnement.quantite)"
-                method="POST" v-if="form_ligne_app">
+            <form @submit.prevent="creerLigneAppro(ligne_approvisionnement)" method="POST" v-if="form_ligne_app">
                 <h2>Remplir le formulaire d'approvisionnement</h2>
 
                 <!-- Affichage de l'approvisionnement en cours -->
                 <table>
                     <tr class="header">
-                        <td colspan="6"> {{ nouveau_approvisionnement.description }} du: {{ new
+                        <th colspan="6"> {{ nouveau_approvisionnement.description }} du: {{ new
                             Date(dernier_appro.date_commande).toLocaleDateString()
-                        }} Reçu le: {{ new Date(dernier_appro.date_reception).toLocaleDateString() }}</td>
+                        }} Reçu le: {{ new Date(dernier_appro.date_reception).toLocaleDateString() }}</th>
                     </tr>
                     <tr class="header">
                         <td>Consommable</td>
@@ -171,27 +169,27 @@
                 <!-- le formulaire pour renseigner les produits approvisionnés -->
                 <table>
                     <tr class="header">
-                        <td>
+                        <th>
                             <label for="consommable">Consommable</label>
-                        </td>
-                        <td>
+                        </th>
+                        <th>
                             <label for="description">Commentaire</label>
-                        </td>
+                        </th>
 
-                        <td>
+                        <th>
                             <label for="quantite">Quantité </label>
-                        </td>
-                        <td>
+                        </th>
+                        <th>
                             <label for="prix_unitaire">Prix unitaire </label>
-                        </td>
+                        </th>
 
-                        <td>
+                        <th>
                             <label for="prix_total">Prix total </label>
-                        </td>
+                        </th>
 
-                        <td>
+                        <thead>
                             <label for="fournisseur">Fournisseur </label>
-                        </td>
+                        </thead>
                     </tr>
 
                     <tr>
@@ -236,9 +234,9 @@
                 </table>
 
                 <div class="form-group">
-                    <input type="submit" value="Ajouter" class="addappro">
+                    <input type="submit" value="Ajouter" class="btn btn-success m-2">
 
-                    <input type="reset" value="Terminer" class="addappro" @click.prevent="terminer()">
+                    <input type="reset" value="Terminer" class="btn btn-danger" @click.prevent="terminer()">
 
                 </div>
             </form>
@@ -288,8 +286,8 @@ export default {
                 description: "Achat",
                 fournisseur: "",
                 quantite: 1,
-                prix_unitaire: 1,
-                prix_totale: 1,
+                prix_unitaire: 0,
+                prix_totale: 0,
                 approvisionnement: "",
             },
 
@@ -305,6 +303,9 @@ export default {
         this.chargerFournisseurs();
         // this.dernierApprovisionnement();
         this.user = JSON.parse(localStorage.getItem("user"))
+        setInterval(() => {
+            this.Appel();
+        }, 10000);
     },
 
     methods: {
@@ -321,21 +322,54 @@ export default {
 
             }
         },
-
+        /* 
+ 
+      async creerApprovisionnement(donnees) {
+ 
+ 
+          // Vérifier si tous les attributs sont renseignés
+          if (
+ 
+              !donnees.date_commande
+ 
+          ) {
+              Swal.fire({
+                  title: 'La date de commande est obligatoire',
+                  icon: 'error'
+              });
+ 
+              return;
+          }
+ 
+          donnees.utilisateur = {
+              nom: this.user.nom,
+              prenom: this.user.prenom,
+              role: this.user.role
+          }
+          try {
+ 
+              await createApprovisionnement(donnees);
+              console.log("test")
+              Swal.fire({
+                  title: 'Enregistré avec succès',
+                  icon: 'success'
+              });
+              console.log("testtt")
+              this.form_app = false;
+              this.form_ligne_app = true;
+              this.dernierApprovisionnement();
+              localStorage.setItem("en_cours", JSON.stringify([]))
+          } catch (error) {
+              console.log(error);
+          }
+      } */
         async creerApprovisionnement(donnees) {
-
-
             // Vérifier si tous les attributs sont renseignés
-            if (
-
-                !donnees.date_commande
-
-            ) {
+            if (!donnees.date_commande) {
                 Swal.fire({
                     title: 'La date de commande est obligatoire',
                     icon: 'error'
                 });
-
                 return;
             }
 
@@ -343,24 +377,49 @@ export default {
                 nom: this.user.nom,
                 prenom: this.user.prenom,
                 role: this.user.role
-            }
-            try {
+            };
 
-                await createApprovisionnement(donnees);
-                console.log("test")
-                Swal.fire({
-                    title: 'Enregistré avec succès',
-                    icon: 'success'
+            try {
+                const result = await Swal.fire({
+                    title: 'Êtes-vous sûr de vouloir enregistrer ?',
+                    text: 'Êtes-vous sûr de vouloir créer cet approvisionnement ?',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Oui, enregistrer !',
+                    cancelButtonText: 'Annuler'
                 });
-                console.log("testtt")
-                this.form_app = false;
-                this.form_ligne_app = true;
-                this.dernierApprovisionnement();
-                localStorage.setItem("en_cours", JSON.stringify([]))
+
+                if (result.isConfirmed) {
+                    // Créer l'approvisionnement en appelant votre fonction
+                    await createApprovisionnement(donnees);
+
+                    // Afficher un message de succès si l'approvisionnement est créé avec succès
+                    Swal.fire({
+                        title: 'Enregistré avec succès',
+                        icon: 'success'
+                    });
+
+                    this.form_app = false;
+                    this.form_ligne_app = true;
+                    this.dernierApprovisionnement();
+                    localStorage.setItem('en_cours', JSON.stringify([]));
+                } else {
+                    // L'utilisateur a annulé l'enregistrement, vous pouvez gérer cela si nécessaire
+                    console.log('L\'enregistrement a été annulé.');
+                }
             } catch (error) {
+                // En cas d'erreur lors de la création de l'approvisionnement
                 console.log(error);
+                Swal.fire({
+                    title: 'Erreur lors de l\'enregistrement',
+                    text: 'Une erreur est survenue lors de la création de l\'approvisionnement.',
+                    icon: 'error'
+                });
             }
         }
+
         ,
         async dernierApprovisionnement() {
             try {
@@ -373,44 +432,119 @@ export default {
             }
         },
 
+        /*      async creerLigneAppro(donnees) {
+                 // Vérifier si tous les attributs sont renseignés
+     
+                 if (
+                     !donnees.consommable || !donnees.quantite || !donnees.prix_unitaire ||
+                     !donnees.approvisionnement
+                 ) {
+                     Swal.fire({
+                         title: 'Veuillez remplir tous les champs de la ligne d\'approvisionnement',
+                         icon: 'error'
+                     });
+                     return;
+                 }
+     
+     
+                 try {
+                     await createLigneApprovisionnement(donnees);
+                     this.changeStock(donnees, 1);
+     
+                     const en_cours = JSON.parse(localStorage.getItem("en_cours"))
+                     en_cours.push(donnees)
+                     localStorage.setItem("en_cours", JSON.stringify(en_cours))
+     
+     
+                     this.list_appro = JSON.parse(localStorage.getItem("en_cours"));
+     
+     
+     
+                     Swal.fire({
+                         title: 'Enregistré avec succès',
+                         icon: 'success'
+                     });
+     
+                     this.ligne_approvisionnement = {
+                         consommable: "",
+                         description: "Approvisionnement de stock",
+                         fournisseur: "",
+                         quantite: 1,
+                         prix_unitaire: 1,
+                         prix_totale: 1,
+                         approvisionnement: "",
+                     }
+                     this.dernierApprovisionnement()
+                 } catch (error) {
+                     console.log(error);
+                 }
+             } */
         async creerLigneAppro(donnees) {
             // Vérifier si tous les attributs sont renseignés
-
-            if (
-                !donnees.consommable || !donnees.quantite || !donnees.prix_unitaire ||
-                !donnees.approvisionnement
-            ) {
+            if (!donnees.consommable || !donnees.quantite || !donnees.prix_unitaire || !donnees.approvisionnement) {
                 Swal.fire({
                     title: 'Veuillez remplir tous les champs de la ligne d\'approvisionnement',
                     icon: 'error'
                 });
-                console.log("Non réussi")
                 return;
             }
 
-
             try {
-                await createLigneApprovisionnement(donnees);
-                this.changeStock(donnees, 1);
-
-                const en_cours = JSON.parse(localStorage.getItem("en_cours"))
-                en_cours.push(donnees)
-                localStorage.setItem("en_cours", JSON.stringify(en_cours))
-
-
-                this.list_appro = JSON.parse(localStorage.getItem("en_cours"));
-
-
-
-                Swal.fire({
-                    title: 'Enregistré avec succès',
-                    icon: 'success'
+                const result = await Swal.fire({
+                    title: 'Êtes-vous sûr de vouloir enregistrer ?',
+                    text: 'Êtes-vous sûr de vouloir créer cette ligne d\'approvisionnement ?',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Oui, enregistrer !',
+                    cancelButtonText: 'Annuler'
                 });
 
+                if (result.isConfirmed) {
+                    await createLigneApprovisionnement(donnees);
+                    this.changeStock(donnees, 1);
+
+                    // Enregistrement dans le stockage local
+                    const en_cours = JSON.parse(localStorage.getItem('en_cours')) || [];
+                    en_cours.push(donnees);
+                    localStorage.setItem('en_cours', JSON.stringify(en_cours));
+
+                    this.list_appro = en_cours;
+
+                    // Message de succès
+                    Swal.fire({
+                        title: 'Enregistré avec succès',
+                        icon: 'success'
+                    });
+
+                    // Réinitialisation des champs
+                    this.ligne_approvisionnement = {
+                        consommable: '',
+                        description: 'Approvisionnement de stock',
+                        fournisseur: '',
+                        quantite: 1,
+                        prix_unitaire: 1,
+                        prix_totale: 1,
+                        approvisionnement: ''
+                    };
+
+                    this.dernierApprovisionnement();
+                } else {
+                    // L'utilisateur a annulé l'enregistrement
+                    console.log('L\'enregistrement de la ligne d\'approvisionnement a été annulé.');
+                }
             } catch (error) {
+                // En cas d'erreur lors de la création de la ligne d'approvisionnement
                 console.log(error);
+                Swal.fire({
+                    title: 'Erreur lors de l\'enregistrement',
+                    text: 'Une erreur est survenue lors de la création de la ligne d\'approvisionnement.',
+                    icon: 'error'
+                });
             }
         }
+
         ,
 
         async changeStock(ligne_approvisionnement) {
@@ -515,6 +649,14 @@ export default {
             this.display_stock_equipement = true;
 
         },
+        async Appel() {
+            this.chargerConsommables();
+            this.charger_equipement();
+            // this.chargerConsommables();
+            this.chargerFournisseurs();
+            // this.dernierApprovisionnement();
+            this.user = JSON.parse(localStorage.getItem("user"))
+        },
 
         terminer() {
             Swal.fire({
@@ -549,35 +691,25 @@ export default {
 </script>
 
 <style scoped>
-.container {
-    width: 100%;
-    margin: 10px auto;
-    padding-top: 20px;
-    /* padding: 20px; */
-    display: block;
-    justify-content: space-around;
-    background: url("../assets/images/beautiful-view.avif");
-    background-size: cover;
-
-
-}
-
 .list-equipement {
     width: 100%;
     margin: 10px auto;
 }
 
+/* .menu {
+    margin-bottom: 120px;
+} */
+
 .lis_btn {
     display: flex;
-    width: 100%;
+    width: 80%;
+    margin: 0 auto;
     /* position: fixed; */
 
 }
 
-.btn {
-    background-color: rgb(146, 236, 146);
-    height: 50px;
-    width: 250px;
+.btn1 {
+    width: 300px;
     margin-left: 50px;
     border-radius: 10px;
     margin-bottom: 30px;
@@ -586,26 +718,31 @@ export default {
 
 .list-consommables {
     width: 100%;
-    margin: 30px auto;
+    margin: 10px auto;
 }
 
-/* tableau */
+/* Tableau des utilisateurs */
 table {
     border-collapse: collapse;
     width: 100%;
-    background-color: #fff;
-    margin-bottom: 30px;
 }
 
+th,
 td {
-    border: 1px solid black;
-    padding: 2px;
+    border: 1px solid #ddd;
+    padding: 0px;
 }
 
-.header {
-    font-weight: bold;
-    background-color: lightgray;
+.nom {
+    text-align: left;
+    padding-left: 5px;
 }
+
+th {
+    background-color: #f2f2f2;
+}
+
+
 
 .form-group {
     margin-bottom: 20px;
@@ -616,38 +753,7 @@ label {
     font-weight: bold;
 }
 
-input[type="text"],
-input[type="email"],
-input[type="number"],
-input[type="date"],
-textarea {
-    width: 80%;
-    padding: 5px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-}
 
-input[type="submit"] {
-    width: 300px;
-    padding: 15px 20px;
-    margin: 10px;
-    background-color: #4CAF50;
-    color: #fff;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-input[type="reset"] {
-    width: 300px;
-    padding: 15px 20px;
-    margin: 10px;
-    background-color: #f52121;
-    color: #fff;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-}
 
 input[type="submit"]:hover {
     background-color: #45a049;

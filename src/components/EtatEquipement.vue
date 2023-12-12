@@ -2,131 +2,152 @@
     <div class="men">
         <MenuBar />
     </div>
-    <div class="contenu" id="contenu">
-        <div class="entete">
-            <div class="gauche">
-                <h3>REGIE ADMINISTRATIVE</h3>
-                <P>CHARGEE DE LA GESTION </P>
-                <p>DE L'ASSISTANCE EN ESCALE OUGADOUGOU</p>
-                <h3>SETOS</h3>
-                <P>SERVICE MAINTENANCE MATERIELS</P>
+    <h1 class="bg-light">Statistiques</h1>
+    <div class="principal">
+        <div class="menu_vertical">
+            <nav class="navbar ">
+                <ul class="navbar-nav">
+                    <li class="nav-item mb-3" :class="{ 'nav-link-active': afficher_statistique }">
+                        <button type="button" class="btn btn-secondary btn-sm btn-menu_v">Statistiques des
+                            équipements</button>
+                    </li>
 
-            </div>
 
-            <div class="droite">
-                <img src="../assets/logo/logoracgae.png" alt="" srcset="">
-                <h2>RACGAE</h2>
-            </div>
+
+
+
+                </ul>
+            </nav>
         </div>
-        <div class="titre">
-            <h4>MATERIEL D'ASSISTANCE EN ESCALE(GSE) OUAGA/BOBO</h4>
-            <!-- <P v-if="date_du_jour">DISPONIBILITE DU {{ date_du_jour }} </P> -->
-            <p v-if="date_debut_semaine && date_fin_semaine">
-                DISPONIBILITE DU {{ date_debut_semaine }} au {{ date_fin_semaine }}
-            </p>
-        </div>
-        <div class="nbre_par_cat">
-            <table border="1" class="t1">
 
-                <thead>
-                    <tr>
-                        <td colspan="2">
-                            <h5>Parc matériels RACGAE</h5>
-                        </td>
-                    </tr>
-                    <tr class="header">
-                        <th>Type/Engins</th>
-                        <th>Nombre</th>
+        <div class="contenu" id="contenu">
+            <div class="entete">
+                <div class="gauche">
+                    <h3>REGIE ADMINISTRATIVE</h3>
+                    <P>CHARGEE DE LA GESTION </P>
+                    <p>DE L'ASSISTANCE EN ESCALE OUGADOUGOU</p>
+                    <h3>SUPERVISION TECHNIQUE</h3>
+                    <P>SERVICE MAINTENANCE MATERIELS</P>
 
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr v-for="cat in nbre_equipement_par_cat" :key="cat.nom">
-                        <td>{{ cat.categorie }}</td>
-                        <td>{{ cat.nombreEquipements }}</td>
-                    </tr>
-                </tbody>
-            </table>
+                </div>
+
+                <div class="droite">
+                    <img src="../assets/logo/logoracgae.png" alt="" srcset="">
+                    <h2>RACGAE</h2>
+                </div>
+            </div>
+            <div class="titre">
+                <h4>MATERIEL D'ASSISTANCE EN ESCALE(GSE) OUAGA/BOBO</h4>
+                <!-- <P v-if="date_du_jour">DISPONIBILITE DU {{ date_du_jour }} </P> -->
+                <p v-if="date_debut_semaine && date_fin_semaine">
+                    DISPONIBILITE DU {{ date_debut_semaine }} au {{ date_fin_semaine }}
+                </p>
+            </div>
+            <div class="nbre_par_cat">
+                <table border="1" class="t1">
+
+                    <thead>
+                        <tr>
+                            <td colspan="2">
+                                <h5>Parc matériels RACGAE</h5>
+                            </td>
+                        </tr>
+                        <tr class="header">
+                            <th>Type/Engins</th>
+                            <th>Nombre</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="cat in nbre_equipement_par_cat" :key="cat.nom">
+                            <td>{{ cat.categorie }}</td>
+                            <td>{{ cat.nombreEquipements }}</td>
+                        </tr>
+                    </tbody>
+                </table>
 
 
-            <table border="1" class="t1">
-                <thead>
-                    <tr>
-                        <td colspan="2">
-                            <h5>Disponibilité</h5>
-                        </td>
-                    </tr>
-                    <tr class="header">
-                        <th>Type/Engins</th>
-                        <th colspan="2">Nombre
-                    <tr>
-                        <td class="rr">Ouaga</td>
-                        <td class="rr">Bobo</td>
-                    </tr>
-                    </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr v-for="cat in nbre_equipement_par_cat_and_loc" :key="cat.categorie">
-                        <td>{{ cat.categorie }}</td>
-                        <td>
+                <table border="1" class="t1">
+                    <thead>
+                        <tr>
+                            <td colspan="2">
+                                <h5>Disponibilité</h5>
+                            </td>
+                        </tr>
+                        <tr class="header">
+                            <th>Type/Engins</th>
+                            <th colspan="2">Nombre
+                        <tr>
+                            <td class="rr">Ouaga</td>
+                            <td class="rr">Bobo</td>
+                        </tr>
+                        </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="cat in nbre_equipement_par_cat_and_loc" :key="cat.categorie">
+                            <td>{{ cat.categorie }}</td>
+                            <td>
 
-                    <tr>
-                        <td class="rr" v-for="localite in cat.localiteCounts" :key="localite.localite">{{ localite.count }}
-                        </td>
-                    </tr>
-                    <!-- <table>
+                        <tr>
+                            <td class="rr" v-for="localite in cat.localiteCounts" :key="localite.localite">{{ localite.count
+                            }}
+                            </td>
+                        </tr>
+                        <!-- <table>
                                 <tr v-for="localite in cat.localiteCounts" :key="localite.localite">
                                     <td>{{ localite.localite }}</td>
                                     <td>{{ localite.count }}</td>
                                 </tr>
                             </table> -->
-                    </td>
-                    </tr>
-                </tbody>
-            </table>
-
-        </div>
-
-        <div class="indisponible">
-            <table border="1" class="t1">
-                <thead>
-                    <tr>
-                        <td colspan="2">
-                            <h5>Indisponibilité</h5>
                         </td>
-                    </tr>
-                    <tr class="header">
-                        <th>Type/Engins</th>
-                        <th>Nombre
-                    <tr>
-                        <td class="rr">Ouaga</td>
-                        <td class="rr">Bobo</td>
-                    </tr>
-                    </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr v-for="cat in equipement_indisponibles" :key="cat.categorie">
-                        <td>{{ cat.categorie }}</td>
-                        <td>
+                        </tr>
+                    </tbody>
+                </table>
 
-                    <tr>
-                        <td class="rr" v-for="localite in cat.localiteCounts" :key="localite.localite">{{ localite.count }}
-                        </td>
-                    </tr>
-                    <!--  <table>
+            </div>
+
+            <div class="indisponible">
+                <table border="1" class="t1">
+                    <thead>
+                        <tr>
+                            <td colspan="2">
+                                <h5>Indisponibilité</h5>
+                            </td>
+                        </tr>
+                        <tr class="header">
+                            <th>Type/Engins</th>
+                            <th>Nombre
+                        <tr>
+                            <td class="rr">Ouaga</td>
+                            <td class="rr">Bobo</td>
+                        </tr>
+                        </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="cat in equipement_indisponibles" :key="cat.categorie">
+                            <td>{{ cat.categorie }}</td>
+                            <td>
+
+                        <tr>
+                            <td class="rr" v-for="localite in cat.localiteCounts" :key="localite.localite">{{ localite.count
+                            }}
+                            </td>
+                        </tr>
+                        <!--  <table>
                                 <tr v-for="localite in cat.localiteCounts" :key="localite.localite">
                                     <td>{{ localite.localite }}</td>
                                     <td>{{ localite.count }}</td>
                                 </tr>
                             </table> -->
-                    </td>
-                    </tr>
-                </tbody>
-            </table>
+                        </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <button class="btn btn-secondary m-2" @click="imprimerTableaux" type="button">imprimer</button>
         </div>
-        <button @click="imprimerTableaux" type="button">imprimer</button>
     </div>
 </template>
 
@@ -230,9 +251,40 @@ export default {
 
 <style scoped>
 .contenu {
-    width: 90%;
-    margin: 10px auto;
-    border: 1px black solid;
+    width: 75%;
+    height: 100vh;
+    margin: auto;
+}
+
+.principal {
+    display: flex;
+    justify-content: space-between;
+}
+
+.menu_vertical {
+    width: 20%;
+    height: 100vh;
+    justify-content: center;
+    background-color: #f1f1f1;
+    /* flex: 0 0 15%; */
+    padding: 10px;
+    /* margin: 0; */
+    border-radius: 10px;
+}
+
+.nav-link-active button {
+    background-color: #555;
+    /* Mettez ici la couleur que vous souhaitez pour le lien actif */
+    color: white;
+}
+
+.menu_vertical .btn-menu_v {
+    margin-left: 20px;
+    width: 100% !important;
+}
+
+.men {
+    margin-bottom: 120px;
 }
 
 table {
@@ -286,16 +338,18 @@ th {
     width: 100px;
 }
 
-button {
+/* button {
     width: 250px;
     background-color: #71ee0a;
     height: 30px;
     border-radius: 5px;
-}
+} */
 
 
 @media print {
-    .men {
+
+    .men,
+    .menu_vertical {
         display: none;
     }
 

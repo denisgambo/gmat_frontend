@@ -1,7 +1,4 @@
 <template>
-    <div> l'id est:
-        {{ id }}
-    </div>
     <div class="container">
 
         <table border="1" class="m-5">
@@ -23,15 +20,7 @@
         <form>
             <fieldset>
                 <legend>Ajouter d'autres dépenses</legend>
-                <!--   <div class="form-group m-3">
-                    <label for="maintenance">Choisir la maintenance</label><br>
-                    <select v-model="maintenance_choisie" name="maintenance" id="" required>
-                        <option value="" disabled selected>-- Sélectionnez --</option>
-                        <option v-for="maint in maintenances" :key="maint._id" :value="maint._id">{{ maint.equipement }} du
-                            {{ formatDate(new Date()) }}
-                        </option>
-                    </select>
-                </div> -->
+
 
                 <div class="form-group m-3">
                     <label for="designation">Désignation</label>
@@ -48,7 +37,7 @@
 
                 <div class="form-group">
                     <input @click="AddDepense()" type="button" value="Ajouter" class="btn btn-secondary m-3">
-                    <router-link to="/maintenance" class="btn btn-secondary"> Retour</router-link>
+                    <router-link to="/dashbord" class="btn btn-secondary"> Retour</router-link>
 
                 </div>
 
@@ -196,19 +185,18 @@ table {
 /* tableau */
 table {
     border-collapse: collapse;
-    width: 100%;
+    width: 90%;
+    margin: auto;
 }
 
+th,
 td {
-    border: 1px solid black;
-    padding: 1px;
-    background-color: white;
+    border: 1px solid #ddd;
+    padding: 5px;
 }
 
 th {
-    font-weight: bold;
-    background-color: rgb(236, 231, 231) !important;
-    border: 1;
+    background-color: #f2f2f2;
 }
 
 fieldset {

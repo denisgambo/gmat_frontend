@@ -1,31 +1,43 @@
 <template>
-    <table border="1">
-        <thead>
-            <tr>
-                <th colspan="6">Ajouter un service</th>
-            </tr>
+    <div>
+        <form @submit.prevent="AjouterService(nouveau_service)">
+            <table border="1" class="justify-content-center">
+                <thead>
+                    <tr>
+                        <th colspan="2">Ajouter un service</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <div class="col-auto">
+                                <label for="nom" class="form-label">Nom du service</label>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="col-auto">
+                                <input v-model="nouveau_service.nom" type="text" id="inputNom" class="form-control"
+                                    aria-describedby="nomHelpInline" required minlength="3">
+                            </div>
+                        </td>
 
-        </thead>
-        <tbody>
-            <tr>
-
-                <td>
-                    <form @submit.prevent="AjouterService(nouveau_service)">
-                        <!-- <h2>Créer un service</h2> -->
-                        <div class="mb-3">
-                            <label for="exampleInputEmail1" class="form-label">Nom du service</label>
-                            <input type="text" v-model="nouveau_service.nom" class="form-control" id="nom"
-                                aria-describedby="Nom">
-                            <div id="nom" class="form-text">Entrez le nom du service.</div>
-                        </div>
-                        <button type="submit" class="btn btn-primary">Ajouter</button>
-                    </form>
-                </td>
+                    </tr>
 
 
-            </tr>
-        </tbody>
-    </table>
+
+                    <tr>
+                        <td colspan="3" class="">
+                            <div class="row g-3 align-items-center justify-content-around">
+                                <div class="col-auto ">
+                                    <button type="submit" class="btn btn-primary btn-lg ">Ajouter</button>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </form>
+    </div>
 </template>
 
 <script>

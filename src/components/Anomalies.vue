@@ -1,15 +1,18 @@
 <template>
+    <div class="bg-light">
+        <h2>Gestion des annomalies ou pannes</h2>
+    </div>
     <div class="">
         <div class="lis_btn">
-            <button class="btn btn-success" @click="changeDisplay(1)">Ajouter une anomalie</button>
-            <button @click="changeDisplay(2)" class="btn btn-success"> Liste des anomalies</button>
+            <button class="btn btn-success m-3" @click="changeDisplay(1)">Ajouter une anomalie</button>
+            <button @click="changeDisplay(2)" class="btn btn-success m-3"> Liste des anomalies</button>
         </div>
 
         <div class="list_animalies" v-if="display_list_anomalies">
-            <table border="1" class="table">
+            <table border="1">
                 <thead>
                     <tr>
-                        <th colspan="6">Liste des anomalies</th>
+                        <th colspan="6">Liste des anomalies ou types de pannes</th>
                     </tr>
                     <tr>
                         <th>Numéro</th>
@@ -22,12 +25,13 @@
                 <tbody>
                     <tr v-for="(anomalie, index) in anomalies" :key="anomalie._id">
                         <td>{{ index + 1 }}</td>
-                        <td>{{ anomalie.nom }}</td>
-                        <td>{{ anomalie.description }}</td>
+                        <td class="nom">{{ anomalie.nom }}</td>
+                        <td class="nom">{{ anomalie.description }}</td>
                         <td>
+                            <button @click="modifier(anomalie)" type="button" class="btn btn-success btn1">Modifier</button>
                             <button @click="removeAnomalie(anomalie._id)" type="button"
-                                class="btn btn-danger">Supprimer</button>
-                            <button @click="modifier(anomalie)" type="button" class="btn btn-secondary">Modifier</button>
+                                class="btn btn-secondary btn1">Supprimer</button>
+
                         </td>
 
                     </tr>
@@ -64,8 +68,8 @@ export default {
     },
 
     async created() {
-        this.anomalies = await getAllAnomalies()
-        console.log(this.anomalies)
+        this.chargerAnomalies()
+        // console.log(this.anomalies)
     },
     methods: {
         changeDisplay(entree) {
@@ -76,12 +80,16 @@ export default {
             } else if (entree == 2) {
                 this.display_anomalie_form = false;
                 this.display_list_anomalies = true;
+                this.chargerAnomalies()
                 this.display_modif = false
             } else if (entree == 3) {
                 this.display_anomalie_form = false;
                 this.display_list_anomalies = false;
                 this.display_modif = true
             }
+        },
+        async chargerAnomalies() {
+            this.anomalies = await getAllAnomalies()
         },
         modifier(anomalie) {
             this.a_modifier = anomalie
@@ -130,7 +138,17 @@ table {
 th,
 td {
     border: 1px solid #ddd;
-    padding: 8px;
+    padding: 0px;
+}
+
+.nom {
+    text-align: left;
+    padding-left: 5px;
+}
+
+.btn1 {
+    margin: 10px;
+    width: 100px;
 }
 
 th {
@@ -142,10 +160,6 @@ th {
     width: 100%;
     /* position: fixed; */
 
-}
-
-.btn {
-    margin: 20px;
 }
 
 .list_animalies {

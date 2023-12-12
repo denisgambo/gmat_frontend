@@ -11,45 +11,46 @@
                 </thead>
                 <tbody>
 
-                    <div class="row g-3 align-items-center">
-                        <tr>
-                            <td>
-                                <div class="col-auto">
-                                    <label for="inputNom" class="col-form-label">Titre</label>
+                    <tr>
+                        <td>
+                            <div class="col-auto">
+                                <label for="inputNom" class="col-form-label">Titre</label>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="col-auto">
+                                <input v-model="justification.titre" type="text" id="inputNom" class="form-control"
+                                    aria-describedby="nomHelpInline" required minlength="3">
+                            </div>
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="col-auto">
+                                <label for="inputNom" class="col-form-label">Description</label>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="col-auto">
+                                <textarea v-model="justification.description" type="text" id="inputDescription"
+                                    class="form-control" aria-describedby="nomHelpInline" required minlength="3"></textarea>
+                            </div>
+                        </td>
+
+                    </tr>
+
+
+
+                    <tr>
+                        <td colspan="3" class="">
+                            <div class="row g-3 align-items-center justify-content-around">
+                                <div class="col-auto ">
+                                    <button type="submit" class="btn btn-primary btn-lg ">Appliquer</button>
                                 </div>
-                            </td>
-                            <td>
-                                <div class="col-auto">
-                                    <input v-model="justification.titre" type="text" id="inputNom" class="form-control"
-                                        aria-describedby="nomHelpInline" required minlength="3">
-                                </div>
-                            </td>
-                            <td>
-                                <div class="col-auto">
-                                    <span id="nomHelpInline" class="form-text">
-                                        Doit comporter au moins 3 caractères.
-                                    </span>
-                                </div>
-                            </td>
-
-
-
-                        </tr>
-                    </div>
-
-
-
-                    <div class="row g-3 align-items-center ">
-                        <tr>
-                            <td colspan="3" class="">
-                                <div class="row g-3 align-items-center justify-content-around">
-                                    <div class="col-auto ">
-                                        <button type="submit" class="btn btn-primary btn-lg ">Appliquer</button>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                    </div>
+                            </div>
+                        </td>
+                    </tr>
 
                 </tbody>
             </table>
@@ -68,13 +69,11 @@ import { ModifierJustification } from '@/api/justification';
 import Swal from 'sweetalert2';
 
 export default {
-    name: "AjouterJustification",
+    name: "ModifierJustification",
     props: ["justif"],
     data() {
         return {
-            justification: {
-
-            }
+            justification: ""
         }
     },
     created() {
@@ -100,7 +99,10 @@ export default {
                     text: 'La justification a été modifiée avec succès.',
                     icon: 'success',
                 });
-                this.justification.titre = "";
+                this.justification.titre = "",
+                    this.justification.description = ""
+                this.$router.push({ name: 'parametre' });
+
 
             } catch (error) {
                 console.log(error);

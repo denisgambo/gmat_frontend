@@ -1,27 +1,32 @@
 <template>
-    <div class="menu-horizontal">
+    <div>
         <nav class="menu">
             <ul>
                 <!-- <li><a href="/dashbord">Tableau de bord</a></li> -->
-                <li>
-                    <router-link to="/dashbord">Tableau de bord</router-link>
+                <li class="tb">
+                    <router-link to="/dashbord" class="tb">Tableau de bord</router-link>
                 </li>
-                <li v-if="$store.state.menu_equipements">
-                    <router-link to="/ajouter-equipement">Equipement</router-link>
+                <li>
+                    <router-link to="/equipements">Equipements</router-link>
                     <!-- <a href="/ajouter-equipement">Equipement</a> -->
                 </li>
-                <li v-if="$store.state.menu_consommables">
+                <li>
                     <router-link to="/ajouter-consommable">Consommable</router-link>
 
                     <!-- <a href="/ajouter-consommable">Consommable</a> -->
                 </li>
-                <li>
+
+                <!-- <li>
                     <router-link to="/ajouter-categorie">Catégories</router-link>
+
+                </li> -->
+                <li>
+                    <router-link to="/maintenance">Opérations</router-link>
 
                     <!-- <a href="/ajouter-categorie">Catégorie</a> -->
                 </li>
-                <li v-if="$store.state.menu_consommables"><router-link to="/approvisionnement">Stock</router-link></li>
-                <li v-if="$store.state.menu_equipements"><router-link to="/etat">Statistiques</router-link></li>
+
+                <li><router-link to="/etat">Statistiques</router-link></li>
                 <li class="profil">
                     <img src="../assets/images/photo_profil.png" alt=""><br>
                     <small>{{ user.nom }}</small>
@@ -109,6 +114,23 @@ export default {
 <style scoped>
 .menu {
     background-color: #333;
+    position: fixed;
+    width: 100%;
+    margin: auto;
+    margin-bottom: 100px;
+    top: 0;
+    left: 0;
+    right: 0;
+}
+
+.tb {
+    background-color: #fff !important;
+    color: red !important;
+    border-radius: 10px;
+}
+
+.tb a {
+    color: red;
 }
 
 .menu ul {
@@ -116,16 +138,19 @@ export default {
     margin: 0;
     padding: 0;
     display: flex;
+    z-index: 1000;
 }
 
 .menu li {
     flex: 1;
+    padding: 0;
 }
 
 .menu li a {
     display: block;
     text-align: center;
     padding: 12px;
+
     color: #fff;
     text-decoration: none;
 }
@@ -161,7 +186,7 @@ export default {
 }
 
 .menu .profil .dropdown-menu li {
-    margin-bottom: 5px;
+    margin-bottom: 2px;
 }
 
 .menu .profil .dropdown-menu li a {
@@ -176,7 +201,6 @@ export default {
 small {
     font-weight: bold;
     font-family: system-ui;
-    /* background-color: #ccc; */
     color: white;
     border-radius: 5px;
 }

@@ -2,10 +2,10 @@ import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import TableauDeBord from '../views/TableauDeBord.vue'
 import Consommable from '../components/Consommable.vue'
-import Maintenance from '../components/Maintenance.vue'
+import Maintenance from '../views/Maintenance.vue'
 import AjouterEquipement from '../components/AjouterEquipement.vue'
 import AjouterConsommable from '../components/AjouterConsommable.vue'
-import AjouterCategorie from '../components/AjouterCategorie.vue'
+import AjouterCategorie from '../components/AjouterCategorieConsommable.vue'
 import ApprovisionnementStock from '../components/ApprovisionnementStock.vue'
 import GestionUtilisateur from '../components/GestionUtilisateur.vue'
 import EtatEquipement from '../components/EtatEquipement.vue'
@@ -70,6 +70,20 @@ const routes = [
     path: '/consommable',
     name: 'consommable',
     component: Consommable,
+    props: true,
+     beforeEnter: requireAuth
+  },
+    {
+    path: '/equipements',
+    name: 'Equipement',
+    component: () => import('../views/Equipements.vue'),
+    props: true,
+     beforeEnter: requireAuth
+  },
+      {
+    path: '/fiche-maintenance',
+    name: 'FicheMaintenance',
+    component: () => import('../views/FicheMaintenance.vue'),
     props: true,
      beforeEnter: requireAuth
   },

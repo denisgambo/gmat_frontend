@@ -1,31 +1,46 @@
 <template>
-    <table border="1">
-        <thead>
-            <tr>
-                <th colspan="6">Modifer un service</th>
-            </tr>
-
-        </thead>
-        <tbody>
-            <tr>
-
-                <td>
-                    <form @submit.prevent="ModifService(service_modifier)">
-                        <!-- <h2>Créer un service</h2> -->
-                        <div class="mb-3">
-                            <label for="exampleInputEmail1" class="form-label">Nom du service</label>
-                            <input type="text" v-model="service_modifier.nom" class="form-control" id="nom"
-                                aria-describedby="Nom">
-                            <div id="nom" class="form-text">Entrez le nom du service.</div>
-                        </div>
-                        <button type="submit" class="btn btn-primary">Modifier</button>
-                    </form>
-                </td>
+    <div>
 
 
-            </tr>
-        </tbody>
-    </table>
+        <form @submit.prevent="ModifService(service_modifier)">
+            <table border="1" class="justify-content-center">
+                <thead>
+                    <tr>
+                        <th colspan="2">Modifier un service</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <div class="col-auto">
+                                <label for="nom" class="form-label">Nom du service</label>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="col-auto">
+                                <input v-model="service_modifier.nom" type="text" id="inputNom" class="form-control"
+                                    aria-describedby="nomHelpInline" required minlength="3">
+                            </div>
+                        </td>
+
+                    </tr>
+
+
+
+                    <tr>
+                        <td colspan="3" class="">
+                            <div class="row g-3 align-items-center justify-content-around">
+                                <div class="col-auto ">
+                                    <button type="submit" class="btn btn-primary btn-lg ">Ajouter</button>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </form>
+
+    </div>
 </template>
 
 <script>

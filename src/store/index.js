@@ -5,7 +5,10 @@ export default createStore({
   state: {
     menu_consommables:false,
     menu_equipements:true,
-    menu_maintenance:false,
+    menu_maintenance:true,
+     menu_operation:true,
+     menu_demandes:false,
+     display_operation:true,
 
     // Les variables du composantr maintenance
     display_liste_maintenance:true,

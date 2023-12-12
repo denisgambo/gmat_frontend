@@ -4,7 +4,7 @@
             <h3>REGIE ADMINISTRATIVE</h3>
             <P>CHARGEE DE LA GESTION </P>
             <p>DE L'ASSISTANCE EN ESCALE OUGADOUGOU</p>
-            <h3>SETOS</h3>
+            <h3>SUPERVISION TECHNIQUE</h3>
             <P>SERVICE MAINTENANCE MATERIELS</P>
             <small>{{ date_du_jour }}</small>
 

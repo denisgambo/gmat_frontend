@@ -8,10 +8,10 @@
             <table border="1">
                 <thead>
                     <tr>
-                        <td colspan="3">
+                        <th colspan="3">
                             <h2>{{ utilisateur._id.prenom }} {{ utilisateur._id.nom }}: {{ utilisateur._id.role }}</h2>
 
-                        </td>
+                        </th>
                     </tr>
                     <tr>
                         <th>Numéro</th>
@@ -71,7 +71,8 @@ export default {
 /* Tableau des utilisateurs */
 table {
     border-collapse: collapse;
-    width: 100%;
+    width: 80%;
+    margin: auto;
 }
 
 th,

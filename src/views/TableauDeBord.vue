@@ -2,46 +2,54 @@
     <div class="contenu">
         <div class="menu-vertical">
             <div class="equipement vertical-item">
-                <button type="button" class="hb" @click="allerAuxEquipement()">
+                <button type="button" class="hb" @click="changeDisplay('eq')">
                     <img src="../assets/logo/logoesuipement.png" alt="">
-                    <h3>Equipement</h3>
+                    <h3>TB EQUIPEMENTS</h3>
                 </button>
             </div>
 
             <div class="consommable vertical-item">
-                <button type="button" class="hb" @click="allerAuxConsommables()">
+                <button type="button" class="hb" @click="changeDisplay('cons')">
                     <img src="../assets/logo/logoconsommable.png" alt="">
-                    <h3>Consommables</h3>
+                    <h3>TB CONSOMMABLES</h3>
 
                 </button>
             </div>
             <!-- @click="allerAuxMaintenances()" -->
             <div class="maintenance vertical-item">
-                <router-link to="/maintenance">
-                    <button type="button" class="hb">
+                <button type="button" class="hb" @click="changeDisplay('op')">
+                    <img src="../assets/logo/consommation.png" alt="" srcset="">
+                    <h3>TB OPERATIONS</h3>
+                </button>
 
-                        <img src="../assets/logo/consommation.png" alt="" srcset="">
-                        <h3>Opérations</h3>
-
-                    </button>
-                </router-link>
 
             </div>
 
-        </div>
 
-        <div class="menu-horizontal">
-            <MenuBar />
         </div>
+        <MenuBar />
+
+
+
 
         <div class="espace" :style="{
             backgroundImage: `url(${entreprise.background_image_dashbord
                 })`
         }">
-            <h2 class="texte">{{ texte }}</h2>
 
+
+
+            <h1 class="bg-light">{{ texte }}</h1>
 
             <Consommable v-if="displayConsommable" />
+            <div v-if="$store.state.menu_operation">
+
+
+                <div class="demande_achat" v-if="$store.state.menu_demandes">
+                    <!-- <h2 class="bg-light">Les demandes d'achats</h2> -->
+                    <DemandeAchat />
+                </div>
+            </div>
             <div class="list-categories" v-if="displayCategorie > 0 && displayEspace">
 
 
@@ -66,26 +74,26 @@
 
 
 
-                    <button class="voir_et_retour" type="button" @click="back()">retour</button>
-                    <button class="voir_et_retour" type="button" v-print="'#printMe'">Imprimer</button>
-                    <table border="1" class="t1" id="printMe">
+                    <button class="btn btn-sm btn-secondary m-2" type="button" @click="back()">retour</button>
+                    <button class="btn btn-sm btn-secondary m-2" type="button" v-print="'#printMe'">Imprimer</button>
+                    <table border="1" class="t1 bg-light" id="printMe">
                         <Entete class="entete" />
 
                         <thead>
                             <tr class="header">
-                                <td>Nom</td>
-                                <td>categorie</td>
-                                <td>Service</td>
-                                <td>Marque</td>
-                                <td>Code inventaire</td>
-                                <td>Référence</td>
-                                <td>Localité</td>
-                                <td>Description</td>
+                                <th>Nom</th>
+                                <th>categorie</th>
+                                <th>Service</th>
+                                <th>Marque</th>
+                                <th>Code inventaire</th>
+                                <th>Référence</th>
+                                <th>Localité</th>
+                                <th>Description</th>
 
-                                <td class="no-print">Maintenances</td>
+                                <td class="no-print bg-light">Maintenances</td>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody class="bg-light">
                             <tr v-for="equipement in equipementByCategorie" :key="equipement._id">
                                 <td>{{ equipement.nom }}</td>
                                 <td>{{ equipement.categorie.nom }}</td>
@@ -98,22 +106,17 @@
 
 
                                 <td class="no-print"><button @click="chargerMaintenance(equipement.nom)"
-                                        class="btn btn-secondary btn1">Voir
-                                        la
-                                        liste
-                                        des
-                                        maintenances</button>
+                                        class="btn btn-primary">
+                                        <i class="fas fa-eye"></i> Voir
+                                    </button>
+
                                 </td>
                             </tr>
-                            <!--   <tr class="no-print ">
-                                <td>
-                                    <button type="button" v-print="'#printMe'">Imprimer</button>
-                                </td>
-                            </tr> -->
+
                         </tbody>
                     </table>
                     <div class="justify-content-center">
-                        <button class="btn btn-secondary" type="button" v-print="'#printMe'">Imprimer</button>
+                        <button class="btn btn-sm btn-secondary m-2" type="button" v-print="'#printMe'">Imprimer</button>
                     </div>
                 </div>
 
@@ -123,17 +126,17 @@
                     <Entete class="entete" />
                     <h1>Maintenance concernant cet équipement</h1>
                     <button type="button" v-print="'#list-maintenance'">Imprimer</button>
-                    <table border="1" class="cons">
+                    <table border="1" class="cons bg-light">
                         <thead>
-                            <tr class="header">
-                                <td>Equipement</td>
-                                <td>Anomalie</td>
-                                <td>Consommation</td>
-                                <td>Autres dépenses</td>
-                                <td>Horamètre</td>
-                                <td>Maintenancier</td>
-                                <td>Date d'entrée</td>
-                                <td>Date de sortie</td>
+                            <tr>
+                                <th>Equipement</th>
+                                <th>Anomalie</th>
+                                <th>Consommation</th>
+                                <th>Autres dépenses</th>
+                                <th>Horamètre</th>
+                                <th>Maintenancier</th>
+                                <th>Date d'entrée</th>
+                                <th>Date de sortie</th>
                             </tr>
                         </thead>
 
@@ -166,8 +169,11 @@
                         </tbody>
                     </table>
                 </div>
+
             </div>
+
         </div>
+
 
     </div>
 </template>
@@ -180,6 +186,9 @@ import { getAllMaintenanceWithAgregation } from '@/api/maintenance'
 import Consommable from '../components/Consommable.vue';
 import Entete from '@/components/Entete.vue';
 import MenuBar from '@/components/MenuBar.vue';
+import Maintenance from '@/views/Maintenance.vue';
+import DemandeAchat from './DemandeAchat.vue';
+import MenuMaintenance from '@/components/MenuMaintenance.vue';
 import { getCategories, getEquipementByCategorie, NombreEquipementByCat } from '../api/equipement';
 import { getEntreprise } from '@/api/parametre';
 export default {
@@ -187,7 +196,10 @@ export default {
     components: {
         Consommable,
         MenuBar,
-        Entete
+        Entete,
+        Maintenance,
+        DemandeAchat,
+        MenuMaintenance
     },
     directives: {
         print
@@ -199,11 +211,13 @@ export default {
             displayCategorie: true,
             equipementByCategorie: "",
             displayEquipementByCategorie: false,
-            texte: "Toutes les catégories d'équipements",
+            texte: "Tableau de bord:Catégories d'équipements",
             displayEspace: true,
             displayConsommable: false,
             listMaintenance: "",
             singleMaintenance: "",
+            display_operation: false,
+            display_demande: false,
             displayListMaintenance: false,
             statistic_par_cat: {},
             display_nbr_par_cat: false,
@@ -231,16 +245,7 @@ export default {
                 console.log(error)
             }
         },
-        /*  async enregistrerConnexion(user) {
- 
-             try {
-                 response = await createConnexion(user)
-                 alert("Succès")
-                 console.log(response.status)
-             } catch (error) {
-                 console.log(error)
-             }
-         }, */
+
         async equipementByCat(categorieId) {
             try {
                 this.equipementByCategorie = await getEquipementByCategorie(categorieId);
@@ -255,7 +260,7 @@ export default {
         back() {
             this.displayEquipementByCategorie = false,
                 this.displayCategorie = true;
-            this.texte = "Toutes les catégories d'équipements";
+            this.texte = "Tableau de bord:Catégories d'équipements";
             this.displayListMaintenance = false;
         },
         allerAuxConsommables() {
@@ -264,14 +269,59 @@ export default {
             this.displayEquipementByCategorie = false;
             store.state.menu_consommables = true
             store.state.menu_equipements = false
-            this.texte = "Toutes les catégories de consommables"
+            this.texte = "Tableau de bord:Catégories de consommables"
         },
         allerAuxEquipement() {
             this.displayEspace = true;
             this.displayConsommable = false;
             store.state.menu_equipements = true
             store.state.menu_consommables = false,
-                this.texte = "Toutes les catégories d'équipements"
+                this.texte = "Tableau de bord:Catégories d'équipements"
+        },
+
+        changeDisplay(option) {
+            if (option == "eq") {
+                this.displayEspace = true;
+                this.displayConsommable = false;
+                store.state.menu_equipements = true
+                store.state.menu_consommables = false,
+                    store.state.menu_operation = false
+                // this.display_operation = false;
+                this.display_demande = false;
+                this.texte = "Tableau de bord:Catégories d'équipements"
+            } else if (option == "cons") {
+                this.displayEspace = false;
+                this.displayConsommable = true;
+                this.displayEquipementByCategorie = false;
+                store.state.menu_consommables = true
+                store.state.menu_equipements = false
+                store.state.menu_operation = false
+                // this.display_operation = false
+                this.texte = "Tableau de bord:Catégories de consommables";
+                this.display_demande = false;
+            } else if (option == 'op') {
+                this.displayEspace = false;
+                this.displayConsommable = false;
+                this.displayEquipementByCategorie = false;
+                store.state.menu_consommables = false
+                store.state.menu_equipements = false
+                store.state.menu_operation = true
+                // this.display_operation = true
+                this.texte = "Les opérations";
+                this.display_demande = false;
+
+            } else if (option == 'dem') {
+                this.display_demande = true,
+                    this.displayEspace = false;
+                this.displayConsommable = false;
+                this.displayEquipementByCategorie = false;
+                store.state.menu_consommables = false
+                store.state.menu_equipements = false
+                // store.state.menu_demandes = true
+                store.state.menu_operation = false
+                // this.display_operation = false
+                this.texte = "Demandes d'achats"
+            }
         },
 
         async chargerMaintenance(equipementId) {
@@ -311,6 +361,22 @@ export default {
 
 
 <style scoped>
+/* Tableau des utilisateurs */
+table {
+    border-collapse: collapse;
+    width: 80%;
+}
+
+th,
+td {
+    border: 1px solid #ddd;
+    padding: 5px;
+}
+
+th {
+    background-color: #f2f2f2;
+}
+
 .entete {
     display: none;
 }
@@ -321,25 +387,24 @@ export default {
     display: grid;
     grid-template-columns: 20% 1fr;
     grid-template-rows: 20% 1fr;
-    background-color: #6F6F6F;
+    /* background-color: #6F6F6F; */
 }
 
 .menu-vertical {
     background-color: #00FFFF;
-    /*  background: url("https://cdn.wallpapersafari.com/55/84/OW9N2b.jpg");
-    background-size: cover; */
+    margin-top: 120px;
     grid-row: 1 / span 2;
+    height: 100%;
 }
 
-/* .menu-horizontal {
-    background-color: #6F6F6F;
-    display: flex;
-    justify-content: space-between;
-} */
+.menu-horizontal {
+    margin-top: 120px;
+}
+
 
 .espace {
-    /* background-color: #abf794; */
-    /* background: url("../assets/images/beautiful-view.avif"); */
+    padding-top: 0;
+    margin: 0;
     background-size: cover;
     grid-row: 2 / 3;
     grid-column: 2 / 3;
@@ -348,7 +413,7 @@ export default {
 .vertical-item {
     width: 100%;
     height: 150px;
-    margin-bottom: 40px;
+    margin-bottom: 10px;
     border-radius: 15px;
 }
 
@@ -385,7 +450,7 @@ export default {
     border-radius: 10px;
 }
 
-h1,
+
 h2,
 h3,
 h5,
@@ -423,36 +488,20 @@ h3 {
     width: 40%;
 }
 
+.achat {
+    background-color: blueviolet;
+}
+
 .list-equipement {
     width: 100%;
 }
 
-table {
-    border-collapse: collapse;
-    width: 100%;
-    background-color: white !important;
-}
-
-td {
-    border: 1px solid black;
-    padding: 10px;
-}
-
-.header {
-    font-weight: bold;
-    background-color: lightgray !important;
-}
-
-th {
-    padding: 10px;
-    /* background-color: lightgray; */
-}
 
 
 
-.list-maintenance {
-    margin-top: 20px;
-}
+/* .list-maintenance {
+    margin-top: 10px;
+} */
 
 p {
     color: #00BF63 !important;
@@ -494,23 +543,19 @@ p {
     }
 }
 
-h1 {
+/* h1 {
     color: white !important;
     background-color: rgb(94, 13, 245) !important;
-}
+} */
 
 .texte {
     background-color: #00BF63;
 }
 
-.voir_et_retour {
-    background-color: #00FFFF;
-    height: 30px;
-    border-radius: 7px;
-}
 
 .btn1 {
     border: none;
     background-color: rgb(189, 169, 142);
+    width: 80%;
 }
 </style>

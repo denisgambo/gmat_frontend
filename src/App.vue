@@ -1,9 +1,9 @@
 <template>
-<!--   <nav>
+  <!--   <nav>
     <router-link to="/">Home</router-link> |
     <router-link to="/about">About</router-link>
   </nav> -->
-  <router-view/>
+  <router-view />
 </template>
 
 <style>
@@ -28,7 +28,26 @@ nav a.router-link-exact-active {
   color: #42b983;
 }
 
-body{
+body {
   margin-top: 0;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+th,
+td {
+  border: 1px solid #ddd;
+  padding: 5px;
+}
+
+th {
+  background-color: #f2f2f2;
+}
+
+.col-form-label {
+  width: 100px;
 }
 </style>

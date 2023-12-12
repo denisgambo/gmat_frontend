@@ -1,4 +1,7 @@
 <template>
+    <div class="bg-light">
+        <h2>Gestion des opérateurs de maintenance</h2>
+    </div>
     <div class="">
         <div class="lis_btn">
             <button class="btn btn-success" @click="changeDisplay(1)">Ajouter un maintenancier</button>
@@ -23,14 +26,16 @@
                 <tbody>
                     <tr v-for="(maintenancier, index) in maintenanciers" :key="maintenancier._id">
                         <td>{{ index + 1 }}</td>
-                        <td>{{ maintenancier.nom }}</td>
-                        <td>{{ maintenancier.prenom }}</td>
-                        <td>{{ maintenancier.teleohone }}</td>
-                        <td>{{ maintenancier.email }}</td>
-                        <td>
+                        <td class="nom">{{ maintenancier.nom }}</td>
+                        <td class="nom">{{ maintenancier.prenom }}</td>
+                        <td class="nom">{{ maintenancier.telephone }}</td>
+                        <td class="nom">{{ maintenancier.email }}</td>
+                        <td class="d-flex">
+                            <button @click="modifier(maintenancier)" type="button"
+                                class="btn btn-success btn1">Modifier</button>
                             <button @click="removeMaintenancier(maintenancier._id)" type="button"
-                                class="btn btn-danger">Supprimer</button>
-                            <button @click="modifier(maintenancier)" type="button" class="btn btn-danger">Modifier</button>
+                                class="btn btn-secondary btn1">Supprimer</button>
+
                         </td>
 
                     </tr>
@@ -141,7 +146,12 @@ table {
 th,
 td {
     border: 1px solid #ddd;
-    padding: 8px;
+    padding: 5px;
+}
+
+.nom {
+    text-align: left;
+    padding-left: 5px;
 }
 
 th {
@@ -155,7 +165,18 @@ th {
 
 }
 
+.btn1 {
+    width: 100px;
+}
+
+
+
 .btn {
-    margin: 20px;
+    margin: 10px;
+}
+
+.list_maintenancier {
+    width: 90%;
+    margin: 10px auto;
 }
 </style>

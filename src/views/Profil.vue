@@ -1,7 +1,9 @@
 <template>
     <MenuBar />
     <div class="principal">
-        <h2>Gérer mon profil</h2>
+        <div class="bg-light">
+            <h2>Gérer mon profil</h2>
+        </div>
         <div class="container mt-5">
             <div class="row">
                 <div class="col-md-4">
@@ -17,9 +19,7 @@
                                 Téléphone: {{ utilisateur.telephone }} <br>
                                 Email: {{ utilisateur.email }} <br>
                             </p>
-                            <!--  <p class="profile-location">New York, USA</p>
-                            <p class="profile-bio">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed at quam eget
-                                turpis euismod eleifend.</p> -->
+
                         </div>
                     </div>
                 </div>
@@ -34,32 +34,67 @@
                     <div class="profile-about">
                         <div class="modif_form" v-if="display_modif_form">
                             <form @submit.prevent="ModifierProfil()">
-                                <div class="mb-3">
-                                    <label for="Login" class="form-label">Login</label>
-                                    <input v-model="utilisateur.login" type="text" class="form-control" id="login"
-                                        aria-describedby="">
-                                    <!-- <div id="" class="form-text">Entrez un nouveau login </div> -->
-                                </div>
-
-                                <div class="mb-3">
-                                    <label for="telephone" class="form-label">N° de téléphone</label>
-                                    <input v-model="utilisateur.telephone" type="phone" class="form-control" id="telephone"
-                                        aria-describedby="">
-                                    <!-- <div id="" class="form-text">Entrez un nouveau login </div> -->
-                                </div>
-                                <div class="mb-3">
-                                    <label for="exampleInputEmail1" class="form-label">Email </label>
-                                    <input v-model="utilisateur.email" type="email" class="form-control" id=""
-                                        aria-describedby="emailHelp">
-                                    <!-- <div id="emailHelp" class="form-text">Nouvelle adresse email</div> -->
-                                </div>
-                                <!--   <div class="mb-3">
-                                    <label for="exampleInputPassword1" class="form-label">Password</label>
-                                    <input type="password" class="form-control" id="exampleInputPassword1">
-                                </div> -->
-
-                                <button type="submit" class="btn btn1 btn-primary m-3">Submit</button>
+                                <table border="1" class="justify-content-center">
+                                    <tbody>
+                                        <tr>
+                                            <th colspan="2">
+                                                <h2>Modifier mon Profil</h2>
+                                            </th>
+                                        </tr>
+                                        <tr>
+                                            <td class="col-auto">
+                                                <label for="prenom" class="form-label">Prénom</label>
+                                            </td>
+                                            <td>
+                                                <input v-model="utilisateur.prenom" type="text" class="form-control"
+                                                    id="prenom" aria-describedby="">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="col-auto">
+                                                <label for="nom" class="form-label">Nom</label>
+                                            </td>
+                                            <td>
+                                                <input v-model="utilisateur.nom" type="text" class="form-control" id="nom"
+                                                    aria-describedby="">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="col-auto">
+                                                <label for="Login" class="form-label">Login</label>
+                                            </td>
+                                            <td>
+                                                <input v-model="utilisateur.login" type="text" class="form-control"
+                                                    id="login" aria-describedby="">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="col-auto">
+                                                <label for="telephone" class="form-label">N° de téléphone</label>
+                                            </td>
+                                            <td>
+                                                <input v-model="utilisateur.telephone" type="phone" class="form-control"
+                                                    id="telephone" aria-describedby="">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="col-auto">
+                                                <label for="exampleInputEmail1" class="form-label">Email </label>
+                                            </td>
+                                            <td>
+                                                <input v-model="utilisateur.email" type="email" class="form-control" id=""
+                                                    aria-describedby="emailHelp">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2" class="text-center">
+                                                <button type="submit" class="btn btn-primary">Submit</button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
                             </form>
+
                         </div>
 
                         <div class="password_form" v-if="display_passord_form">
@@ -122,7 +157,7 @@
 import MenuBar from '@/components/MenuBar.vue'
 import { createDeconnexion } from '@/api/historique_connxion'
 import Swal from 'sweetalert2'
-import { getUserById, updatePassword } from '@/api/utilisateur'
+import { getUserById, updatePassword, updateUser } from '@/api/utilisateur'
 export default {
     name: "Profil",
     props: ['id'],
@@ -131,7 +166,7 @@ export default {
     },
     data() {
         return {
-            utilisateur: {},
+            utilisateur: "",
             display_modif_form: false,
             display_passord_form: false,
             passe_actuel: "",
@@ -144,8 +179,46 @@ export default {
         console.log("user", this.utilisateur)
     },
     methods: {
-        ModifierProfil() {
-            alert("Test")
+        async ModifierProfil() {
+            try {
+                // Demander une confirmation avant de modifier le profil
+                const confirmation = await Swal.fire({
+                    title: 'Êtes-vous sûr de vouloir modifier votre profil ?',
+                    text: "Cette action est irréversible.",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Oui, modifier'
+                });
+
+                if (confirmation.isConfirmed) {
+                    // Modifier le profil si l'utilisateur a confirmé
+                    const response = await updateUser(this.id, this.utilisateur);
+
+                    // Afficher un message de succès
+
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Profil modifié avec succès !',
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+
+                    // Afficher un message d'échec si la modification a échoué
+
+                }
+            }
+            catch (error) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Échec de la modification du profil',
+                    text: 'Veuillez réessayer',
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+                console.log(error);
+            }
         },
         changeDisplay(entree) {
             if (entree == 1) {
@@ -253,6 +326,10 @@ body {
     padding: 20px;
 }
 
+.principal {
+    margin-top: 120px;
+}
+
 .profile-img img {
     width: 100%;
     border-radius: 50%;
@@ -261,55 +338,29 @@ body {
 .profile-card {
     text-align: center;
     background-color: antiquewhite;
+    font-size: 20px;
+    font-weight: bold;
 }
 
 .profile-name {
-    font-size: 24px;
+    /* font-size: 24px; */
     font-weight: bold;
     margin-top: 20px;
 }
 
-.profile-role,
-.profile-location {
-    color: #777;
-    font-size: 16px;
-}
 
-.profile-bio {
-    margin-top: 20px;
-}
 
-.section-title {
-    font-size: 24px;
-    font-weight: bold;
-    margin-bottom: 10px;
-}
 
-.about-text {
-    margin-bottom: 20px;
-}
 
-.skills-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
 
-.skills-list li {
-    display: inline-block;
-    background-color: #f2f2f2;
-    padding: 5px 15px;
-    border-radius: 20px;
-    margin: 5px;
-    font-size: 14px;
-}
 
-.modif_form {
-    width: 50%;
+
+/* .modif_form {
+    width: 60%;
     margin: 10px auto;
     background-color: rgb(245, 250, 244);
     border: 1px blue solid;
-}
+} */
 
 .password_form {
     width: 80%;
@@ -323,5 +374,21 @@ body {
 
 .btn1 {
     width: 250px;
+}
+
+/* Tableau des utilisateurs */
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+th,
+td {
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+
+th {
+    background-color: #f2f2f2;
 }
 </style>

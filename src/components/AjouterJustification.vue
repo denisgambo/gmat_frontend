@@ -11,75 +11,53 @@
                 </thead>
                 <tbody>
 
-                    <div class="row g-3 align-items-center">
-                        <tr>
-                            <td>
-                                <div class="col-auto">
-                                    <label for="inputNom" class="col-form-label">Titre</label>
-                                </div>
-                            </td>
-                            <td>
-                                <div class="col-auto">
-                                    <input v-model="nouvelle_justification.titre" type="text" id="inputNom"
-                                        class="form-control" aria-describedby="nomHelpInline" required minlength="3">
-                                </div>
-                            </td>
-                            <td>
-                                <div class="col-auto">
-                                    <span id="nomHelpInline" class="form-text">
-                                        Doit comporter au moins 3 caractères.
-                                    </span>
-                                </div>
-                            </td>
-                            <!-- <td>
-                                <div class="col-auto">
-                                    <span id="nomHelpInline" class="form-text">
-                                        Doit comporter au moins 3 caractères.
-                                    </span>
-                                </div>
-                            </td -->
+
+                    <tr>
+                        <td>
+                            <div class="col-auto">
+                                <label for="inputNom" class="col-form-label">Titre</label>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="col-auto">
+                                <input v-model="nouvelle_justification.titre" type="text" id="inputNom" class="form-control"
+                                    aria-describedby="nomHelpInline" required minlength="3">
+                            </div>
+                        </td>
 
 
-                        </tr>
-                    </div>
 
 
-                    <div class="row g-3 align-items-center">
-                        <tr class="">
-                            <td class="">
-                                <div class="col-auto">
-                                    <label for="inputDescription" class="col-form-label">Description</label>
-                                </div>
-                            </td>
-                            <td>
-                                <div class="col-auto">
-                                    <input v-model="nouvelle_justification.description" type="text" id="inputDescription"
-                                        class="form-control" aria-describedby="descriptionHelpInline" minlength="10"
-                                        required>
-                                </div>
-                            </td>
-                            <td>
-                                <div class="col-auto">
-                                    <span id="descriptionHelpInline" class="form-text">
-                                        Doit comporter au moins 10 caractères.
-                                    </span>
-                                </div>
-                            </td>
-                        </tr>
+                    </tr>
 
 
-                    </div>
-                    <div class="row g-3 align-items-center ">
-                        <tr>
-                            <td colspan="3" class="">
-                                <div class="row g-3 align-items-center justify-content-around">
-                                    <div class="col-auto ">
-                                        <button type="submit" class="btn btn-primary btn-lg ">Créer</button>
-                                    </div>
+
+                    <tr class="">
+                        <td class="">
+                            <div class="col-auto">
+                                <label for="inputDescription" class="col-form-label">Description</label>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="col-auto">
+                                <textarea v-model="nouvelle_justification.description" type="text" id="inputDescription"
+                                    class="form-control" aria-describedby="descriptionHelpInline" minlength="10"
+                                    required></textarea>
+                            </div>
+                        </td>
+
+                    </tr>
+
+
+                    <tr>
+                        <td colspan="3" class="">
+                            <div class="row g-3 align-items-center justify-content-around">
+                                <div class="col-auto ">
+                                    <button type="submit" class="btn btn-primary btn-lg ">Créer</button>
                                 </div>
-                            </td>
-                        </tr>
-                    </div>
+                            </div>
+                        </td>
+                    </tr>
 
                 </tbody>
             </table>

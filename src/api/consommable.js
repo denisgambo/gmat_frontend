@@ -1,85 +1,144 @@
-import axios from 'axios';
+import axios from "axios";
 
-const API_URL = 'http://159.89.166.117:3000/categorieconsommable';
+const API_URL = "http://159.89.166.117:3000/categorieconsommable";
+const API_URL2 = "http://159.89.166.117:3000/consommable";
+function getToken() {
+  const user = JSON.parse(localStorage.getItem("user"));
+  return user.token;
+}
 
 async function getCategoriesConsommable() {
-    try {
-        const response = await axios.get(`${API_URL}`);
-        return response.data;
-    } catch (error) {
-        console.log(error);
-        throw error;
-    }
+  const token = getToken();
+  const headers = {
+    Authorization: `Bearer ${token}`,
+    "Content-Type": "application/json",
+  };
+  try {
+    const response = await axios.get(`${API_URL}`);
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
 }
 
 //Tous les consommables
 async function getAllConsommables() {
-    try {
-        const response = await axios.get(`http://159.89.166.117:3000/consommable`);
-        return response.data;
-    } catch (error) {
-        console.log(error);
-        throw error;
-    }
+  const token = getToken();
+  const headers = {
+    Authorization: `Bearer ${token}`,
+    "Content-Type": "application/json",
+  };
+  try {
+    const response = await axios.get(`${API_URL2}`);
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
 }
 
 //Tous les consommables
 async function getConsommablesCritique() {
-    try {
-        const response = await axios.get(`http://159.89.166.117:3000/consommable/critique`);
-        return response.data;
-    } catch (error) {
-        console.log(error);
-        throw error;
-    }
+  const token = getToken();
+  const headers = {
+    Authorization: `Bearer ${token}`,
+    "Content-Type": "application/json",
+  };
+  try {
+    const response = await axios.get(`${API_URL2}/critique`, {
+      headers: headers,
+    });
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
 }
 
 async function getConsommableByCategorie(categorieConsommableId) {
-    try {
-        const response = await axios.get(`http://159.89.166.117:3000/consommable/consommablescategorie?categorieId=${categorieConsommableId}`);
-        return response.data;
-    } catch (error) {
-        console.log(error);
-        throw error;
-    }
+  const token = getToken();
+  const headers = {
+    Authorization: `Bearer ${token}`,
+    "Content-Type": "application/json",
+  };
+  try {
+    const response = await axios.get(
+      `${API_URL2}/consommablescategorie?categorieId=${categorieConsommableId}`,
+      {
+        headers: headers,
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
 }
 
 async function createConsommable(consommableData) {
-    try {
-        const response = await axios.post(`http://159.89.166.117:3000/consommable`, consommableData);
-        return response.data;
-    } catch (error) {
-        console.log(error);
-        throw error;
-    }
+  const token = getToken();
+  const headers = {
+    Authorization: `Bearer ${token}`,
+    "Content-Type": "application/json",
+  };
+  try {
+    const response = await axios.post(`${API_URL2}`, consommableData, {
+      headers: headers,
+    });
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
 }
 
 async function createCategorieConsommable(categorieData) {
-    try {
-        const response = await axios.post(`http://159.89.166.117:3000/categorieconsommable`, categorieData);
-        return response.data;
-    } catch (error) {
-        console.log(error);
-        throw error;
-    }
+  const token = getToken();
+  const headers = {
+    Authorization: `Bearer ${token}`,
+    "Content-Type": "application/json",
+  };
+  try {
+    const response = await axios.post(`${API_URL}`, categorieData, {
+      headers: headers,
+    });
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
 }
 
 //Selectionner un consommable par id
 async function getConsommableById(id) {
+  const token = getToken();
+  const headers = {
+    Authorization: `Bearer ${token}`,
+    "Content-Type": "application/json",
+  };
   try {
-    const response = await axios.get(`http://159.89.166.117:3000/consommable/select/${id}`); // Utiliser l'ID dans l'URL
+    const response = await axios.get(`${API_URL2}/select/${id}`, {
+      headers: headers,
+    }); // Utiliser l'ID dans l'URL
     return response.data;
   } catch (error) {
     console.log(error);
     throw error;
   }
 }
-
 
 // supprimer un équipement
 async function supprimerConsommable(id) {
+  const token = getToken();
+  const headers = {
+    Authorization: `Bearer ${token}`,
+    "Content-Type": "application/json",
+  };
   try {
-    const response = await axios.delete(`http://159.89.166.117:3000/consommable/supprimer/${id}`); // Utiliser l'ID dans l'URL
+    const response = await axios.delete(`${API_URL2}/supprimer/${id}`, {
+      headers: headers,
+    }); // Utiliser l'ID dans l'URL
     return response.data;
   } catch (error) {
     console.log(error);
@@ -87,9 +146,28 @@ async function supprimerConsommable(id) {
   }
 }
 
-async function getEquipementById(id) {
+// async function getEquipementById(id) {
+//   try {
+//     const response = await axios.get(
+//       `http://159.89.166.117:3000/equipement/${id}`
+//     ); // Utiliser l'ID dans l'URL
+//     return response.data;
+//   } catch (error) {
+//     console.log(error);
+//     throw error;
+//   }
+// }
+
+async function supprimerCategoriCons(id) {
+  const token = getToken();
+  const headers = {
+    Authorization: `Bearer ${token}`,
+    "Content-Type": "application/json",
+  };
   try {
-    const response = await axios.get(`http://159.89.166.117:3000/equipement/${id}`); // Utiliser l'ID dans l'URL
+    const response = await axios.delete(`${API_URL}/supprimer/${id}`, {
+      headers: headers,
+    }); // Utiliser l'ID dans l'URL
     return response.data;
   } catch (error) {
     console.log(error);
@@ -97,4 +175,14 @@ async function getEquipementById(id) {
   }
 }
 
-export { getCategoriesConsommable, getConsommableByCategorie, createConsommable, createCategorieConsommable, getAllConsommables, getConsommableById, supprimerConsommable,getConsommablesCritique };
+export {
+  getCategoriesConsommable,
+  getConsommableByCategorie,
+  createConsommable,
+  createCategorieConsommable,
+  getAllConsommables,
+  getConsommableById,
+  supprimerConsommable,
+  getConsommablesCritique,
+  supprimerCategoriCons,
+};

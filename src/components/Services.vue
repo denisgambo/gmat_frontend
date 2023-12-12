@@ -1,4 +1,7 @@
 <template>
+    <div class="bg-light">
+        <h2>Gestion des services</h2>
+    </div>
     <div class="center">
         <div class="lis_btn">
             <button class="btn btn-success m-3" @click="changeDisplay(1)">Ajouter un service</button>
@@ -20,11 +23,12 @@
                 <tbody>
                     <tr v-for="(service, index) in list_services" :key="service._id">
                         <td>{{ index + 1 }}</td>
-                        <td>{{ service.nom }}</td>
+                        <td class="nom">{{ service.nom }}</td>
                         <td>
+                            <button @click="modifier(service)" type="button" class="btn btn-success btn1">Modifier</button>
                             <button @click="removeService(service._id)" type="button"
-                                class="btn btn-danger">Supprimer</button>
-                            <button @click="modifier(service)" type="button" class="btn btn-danger">Modifier</button>
+                                class="btn btn-secondary btn1">Supprimer</button>
+
                         </td>
 
                     </tr>
@@ -61,7 +65,7 @@ export default {
         }
     },
     async created() {
-        this.list_services = await getAllServices();
+        this.chargerService()
     },
 
     methods: {
@@ -69,6 +73,9 @@ export default {
             this.a_modifier = service
             this.changeDisplay(3)
 
+        },
+        async chargerService() {
+            this.list_services = await getAllServices();
         },
         async removeService(id) {
             Swal.fire({
@@ -107,7 +114,9 @@ export default {
             } else if (entree == 2) {
                 this.display_service_form = false;
                 this.display_list_service = true;
+                this.chargerService()
                 this.display_modifier = false
+
             } else if (entree == 3) {
                 this.display_service_form = false;
                 this.display_list_service = false;
@@ -129,7 +138,12 @@ table {
 th,
 td {
     border: 1px solid #ddd;
-    padding: 8px;
+    padding: 0px;
+}
+
+.nom {
+    text-align: left;
+    padding-left: 5px;
 }
 
 th {
@@ -143,8 +157,9 @@ th {
 
 }
 
-.btn {
-    margin: 20px;
+.btn1 {
+    margin: 10px;
+    width: 100px;
 }
 
 .list_service {

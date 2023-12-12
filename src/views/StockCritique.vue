@@ -1,7 +1,7 @@
 <template>
     <div class="container">
         <router-link to="/dashbord" class="btn btn-primary m-3 no-print">Retour au tableau de bord</router-link>
-        <table border="1" class="table" id="toprint">
+        <table border="1" id="toprint">
             <Entete class="entete" />
             <thead>
                 <tr>
@@ -20,21 +20,21 @@
             <tbody>
                 <tr v-for="(cons, index) in consommables_critique" :key="cons._id">
                     <td>{{ index + 1 }}</td>
-                    <td>{{ cons.nom }}</td>
-                    <td>{{ cons.quantite_en_stock }}</td>
-                    <td>{{ cons.seuil_critique }}</td>
+                    <td class="to_left">{{ cons.nom }}</td>
+                    <td class="to_left">{{ cons.quantite_en_stock }}</td>
+                    <td class="to_left">{{ cons.seuil_critique }}</td>
                     <td class="no-print">
-                        <router-link to="/approvisionnement" class="btn btn-primary mr-3">Approvisionner</router-link>
+                        <router-link to="/approvisionnement" class=" mr-3">Approvisionner</router-link>
                     </td>
 
                 </tr>
                 <tr class="no-print">
                     <td colspan="5">
                         <div class=" d-flex justify-content-center">
-                            <a href="mailto:admin@gmail.com" class="btn btn-primary mr">Envoyer un email</a>
+                            <a href="mailto:admin@gmail.com" class="btn btn-secondary mr">Envoyer un email</a>
 
 
-                            <button v-print="'#toprint'" class="btn btn-primary ">Imprimer</button>
+                            <button v-print="'#toprint'" class="btn btn-secondary ">Imprimer</button>
 
                         </div>
                     </td>
@@ -78,13 +78,15 @@ export default {
 /* Tableau des utilisateurs */
 table {
     border-collapse: collapse;
-    width: 100%;
+    width: 80%;
+    margin: auto;
+
 }
 
 th,
 td {
     border: 1px solid #ddd;
-    padding: 8px;
+    padding: 5px;
 }
 
 th {
@@ -97,6 +99,11 @@ th {
 
 .mr {
     margin-right: 50px;
+}
+
+.to_left {
+    text-align: left;
+    padding-left: 5px;
 }
 
 @media print {

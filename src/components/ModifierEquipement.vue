@@ -2,7 +2,7 @@
     <div class="container">
         <!-- formulaire pour Modifier un equipement -->
 
-        <form enctype="multipart/form-data" @submit.prevent="ModifierEquipement(id)">
+        <!-- <form enctype="multipart/form-data" @submit.prevent="ModifierEquipement(id)">
             <h3>Modifier l'équipement</h3>
 
             <div class="select">
@@ -99,7 +99,173 @@
                 <input type="submit" value="Retour" @click.prevent="retour" class="space">
             </div>
         </form>
-
+ -->
+        <form enctype="multipart/form-data" @submit.prevent="ModifierEquipement(id)">
+            <table border="1" class="justify-content-center">
+                <tbody>
+                    <tr>
+                        <th colspan="2">
+                            <h3>Ajouter un équipement</h3>
+                        </th>
+                    </tr>
+                    <!-- <tr>
+                        <td colspan="2">
+                            <div class="error_message" v-if="error_message">
+                                {{ error_message }}
+                            </div>
+                        </td>
+                    </tr> -->
+                    <tr>
+                        <td class="label">
+                            <label for="categorie">Catégorie</label><br>
+                        </td>
+                        <td>
+                            <div class="form-group">
+                                <select v-model="equipement_a_modifier.categorie" id="categorie" class="form-control">
+                                    <option v-for="cat in list_categorie" :key="cat._id" :value="cat._id">{{ cat.nom }}
+                                    </option>
+                                </select>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-auto">
+                            <label for="nom">Nom de l'équipement <small class="ob">*</small></label>
+                        </td>
+                        <td>
+                            <input v-model="equipement_a_modifier.nom" type="text" class="form-control" id="nom" required>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <div class="select">
+                                <div class="form-group">
+                                    <label for="service">Service</label>
+                                    <select v-model="equipement_a_modifier.service" class="form-control" id="service">
+                                        <option v-for="service in services" :key="service._id" :value="service.nom">{{
+                                            service.nom }}
+                                        </option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="localite">Localité <small class="ob">*</small></label>
+                                    <select v-model="equipement_a_modifier.localite" class="form-control" id="localite">
+                                        <option v-for="local in list_localite" :key="local._id" :value="local._id">{{
+                                            local.nom }}</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="disponibilite">Disponibilité <small class="ob">*</small></label><br>
+                                    <input v-model="equipement_a_modifier.disponibilite" type="radio" value="true"
+                                        checked>Oui
+                                    <input v-model="equipement_a_modifier.disponibilite" type="radio" value="false">Non
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-auto">
+                            <label for="code_inventaire">Code inventaire <small class="ob">*</small></label>
+                        </td>
+                        <td>
+                            <input v-model="equipement_a_modifier.code_inventaire" type="text" class="form-control"
+                                id="code_inventaire" required>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-auto">
+                            <label for="numero_serie">Numéro de série</label>
+                        </td>
+                        <td>
+                            <input v-model="equipement_a_modifier.numero_serie" type="text" class="form-control"
+                                id="numero_serie">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-auto">
+                            <label for="marque">Marque <small class="ob">*</small></label>
+                        </td>
+                        <td>
+                            <input v-model="equipement_a_modifier.marque" type="text" class="form-control" id="marque"
+                                required>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-auto">
+                            <label for="description">Description <small class="ob">*</small></label>
+                        </td>
+                        <td>
+                            <textarea v-model="equipement_a_modifier.description" class="form-control" id="description"
+                                required></textarea>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-auto">
+                            <label for="reference">Référence <small class="ob">*</small></label>
+                        </td>
+                        <td>
+                            <input v-model="equipement_a_modifier.reference" type="text" class="form-control" id="reference"
+                                required>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <div class="form-group">
+                                <label for="observation">Observation</label>
+                                <textarea v-model="equipement_a_modifier.observation" class="form-control"
+                                    id="observation"></textarea>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" class="date">
+                            <div class="form-group">
+                                <label for="date_acquisition">Date d'acquisition</label>
+                                <input v-model="equipement_a_modifier.date_acquisition" type="date" class="form-control"
+                                    id="date_acquisition">
+                            </div>
+                            <div class="form-group">
+                                <label for="date_mise_en_service">Date de mise en service</label>
+                                <input v-model="equipement_a_modifier.date_mise_en_service" type="date" class="form-control"
+                                    id="date_mise_en_service">
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <div class="form-group">
+                                <label for="image_equipement">Image</label>
+                                <input type="file" class="form-control" id="image_equipement" @change="handleFileChange"
+                                    name="image_equipement">
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <div class="code">
+                                <div class="form-group">
+                                    <label for="code_qr">Code QR</label>
+                                    <input v-model="equipement_a_modifier.code_qr" type="text" class="form-control"
+                                        id="code_qr">
+                                </div>
+                                <div class="form-group">
+                                    <label for="code_bar">Code bar</label>
+                                    <input v-model="code_bar" type="text" class="form-control" id="code_bar">
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" class="text-center">
+                            <div class="form-group">
+                                <input type="submit" value="Modifier" class="btn btn-success m-2">
+                                <input type="submit" value="Retour" @click.prevent="retour" class="btn btn-success m-2">
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </form>
     </div>
 </template>
 
@@ -182,8 +348,8 @@ export default {
                 formData.append('code_inventaire', this.equipement_a_modifier.code_inventaire);
                 formData.append('marque', this.equipement_a_modifier.marque);
                 formData.append('observation', this.equipement_a_modifier.observation);
-                formData.append('date_acquisition', this.equipement_a_modifier.date_acquisition);
-                formData.append('date_mise_en_service', this.equipement_a_modifier.date_mise_en_service);
+                // formData.append('date_acquisition', this.equipement_a_modifier.date_acquisition);
+                // formData.append('date_mise_en_service', this.equipement_a_modifier.date_mise_en_service);
                 formData.append('image_equipement', this.equipement_a_modifier.image_equipement);
                 formData.append('code_bar', this.equipement_a_modifier.code_bar);
                 formData.append('code_qr', this.equipement_a_modifier.code_qr);
@@ -245,12 +411,30 @@ export default {
 </script>
 
 <style scoped>
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+th,
+td {
+    border: 1px solid #ddd;
+    padding: 5px;
+}
+
+th {
+    background-color: #f2f2f2;
+}
+
+.label {
+    width: 30%;
+}
+
 .container {
     /* max-width: 600px; */
     width: 100%;
     margin: 0 auto;
     padding: 20px;
-    background: url("https://cdn.wallpapersafari.com/55/84/OW9N2b.jpg");
     background-size: cover;
 }
 
@@ -259,15 +443,9 @@ h2 {
     text-align: center;
 }
 
-form {
-    width: 80%;
-    margin: 0 auto;
-    border: 1px blue solid;
-}
 
-.form-group {
-    margin-bottom: 5px;
-}
+
+
 
 label {
     /* display: block; */
@@ -279,34 +457,13 @@ label {
     color: red;
 }
 
-input[type="text"],
-input[type="email"],
-input[type="password"],
-input[type="date"],
-/* input[type="file"], */
-textarea {
-    width: 100%;
-    padding: 1px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-}
 
-input[type="submit"] {
-    padding: 10px 20px;
-    background-color: #4CAF50;
-    color: #fff;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-}
 
 input[type="submit"]:hover {
     background-color: #45a049;
 }
 
-input[type="file"] {
-    width: 200px;
-}
+
 
 
 .date {

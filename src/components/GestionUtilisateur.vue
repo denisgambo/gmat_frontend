@@ -1,21 +1,29 @@
 <template>
     <div class="contenu">
-        <MenuBar />
-        <h1 class="h1">Gestion des utilisateurs</h1>
+        <div class="menu_horizontal">
+            <MenuBar />
+
+        </div>
+        <!-- <h1 class="h1">Gestion des utilisateurs</h1> -->
+        <div class="bg-light">
+            <h2>Gestion des utilisateurs</h2>
+        </div>
 
 
-        <button @click="displayForm()" class="display_user_form" type="button">Ajouter un utilisateur</button>
-        <button @click="displaylist()" class="display_user_form" type="button">afficher les utilisateurs</button>
-        <button @click="displayhist()" class="display_user_form" type="button">Historique des connexions</button>
+        <button @click="displayForm()" class="display_user_form btn btn-success m-3" type="button">Ajouter un
+            utilisateur</button>
+        <button @click="displaylist()" class="display_user_form btn btn-success m-3" type="button">afficher les
+            utilisateurs</button>
+        <button @click="displayhist()" class="display_user_form btn btn-success m-3" type="button">Historique des
+            connexions</button>
 
 
 
         <div class="list_user" v-if="display_list_user">
-            <h2>liste des utilisateurs</h2>
             <table>
                 <thead>
                     <tr>
-                        <td colspan="6">Liste des utilisateurs</td>
+                        <th colspan="6">Liste des utilisateurs</th>
                     </tr>
                     <tr>
                         <th>Nom</th>
@@ -28,18 +36,19 @@
                 </thead>
                 <tbody>
                     <tr v-for="currentUser in list_utilisateurs" :key="currentUser._id">
-                        <td>{{ currentUser.nom }}</td>
-                        <td>{{ currentUser.prenom }}</td>
-                        <td>{{ currentUser.role }}</td>
-                        <td>{{ currentUser.telephone }}</td>
-                        <td>{{ currentUser.email }}</td>
+                        <td class="nom">{{ currentUser.nom }}</td>
+                        <td class="nom">{{ currentUser.prenom }}</td>
+                        <td class="nom">{{ currentUser.role }}</td>
+                        <td class="nom">{{ currentUser.telephone }}</td>
+                        <td class="nom">{{ currentUser.email }}</td>
                         <td class="d-flex">
-                            <button @click="SupprimerUser(currentUser._id)"
-                                class="btn btn-secondary btn-sm">Supprimer</button>
-                            <!-- v-if="user.userId != currentUser._id" -->
-                            <button class="btn btn-secondary btn-sm">Modifier</button>
+                            <button @click="modifierUtilisateur(currentUser)" class="btn btn-success btn1">Modifier</button>
                             <button @click="changerAutorisation(currentUser._id, currentUser.autoriser)"
-                                class="btn btn-secondary btn-sm">{{ textbloquer(currentUser.autoriser) }}</button>
+                                class="btn btn-secondary btn1">{{ textbloquer(currentUser.autoriser) }}</button>
+                            <button @click="SupprimerUser(currentUser._id)" class="btn btn-danger btn1">Supprimer</button>
+                            <!-- v-if="user.userId != currentUser._id" -->
+
+
                         </td>
                     </tr>
                 </tbody>
@@ -80,6 +89,7 @@
                             <option value="gestionnaire">Gestionnaire</option>
                             <option value="financier">Financier</option>
                             <option value="controlleur">Contrôleur </option>
+                            <option value="moyens generaux">Moyens généraux</option>
                         </select>
                     </div>
                     <div class="form-group">
@@ -125,7 +135,7 @@
 </template>
 
 <script>
-import { createUser, getAllUser, supprimerUtilisateur, autorisation } from '@/api/utilisateur';
+import { createUser, getAllUser, supprimerUtilisateur, autorisation, updateUser } from '@/api/utilisateur';
 import MenuBar from '@/components/MenuBar.vue';
 import Swal from 'sweetalert2'
 import HistoriqueConnexions from './HistoriqueConnexions.vue';
@@ -139,7 +149,7 @@ export default {
 
     data() {
         return {
-            list_utilisateurs: {},
+            list_utilisateurs: [],
             user: "",
             new_user: {
                 nom: "",
@@ -315,6 +325,101 @@ export default {
                 return "Débloquer";
             }
         },
+        // Votre fonction modifier_utilisateur
+        modifierUtilisateur(user_enter) {
+            // Utilisation de SweetAlert2 pour afficher le formulaire
+            Swal.fire({
+                title: 'Modifier utilisateur',
+                html: `
+            <form id="form-modifier-utilisateur">
+                <div class="form-group">
+                    <label for="role">Rôle de l'utilisateur</label>
+                    <select class="form-control" id="role">
+                        <option value="" disabled selected>-- Sélectionnez --</option>
+                            <option value="administrateur">Administrateur</option>
+                            <option value="gestionnaire">Gestionnaire</option>
+                            <option value="financier">Financier</option>
+                            <option value="controlleur">Contrôleur </option>
+                            <option value="moyens generaux">Moyens généraux</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="mot_de_passe">Mot de passe</label>
+                    <input type="password" class="form-control" id="mot_de_passe">
+                </div>
+                <div class="form-group">
+                    <label for="confirmation_mot_de_passe">Confirmation du mot de passe</label>
+                    <input type="password" class="form-control" id="confirmation_mot_de_passe">
+                </div>
+            </form>
+        `,
+                focusConfirm: false,
+                showCancelButton: true,
+                confirmButtonText: 'Valider',
+                preConfirm: () => {
+                    // Récupération des valeurs des champs du formulaire
+                    const role = document.getElementById('role').value;
+                    const motDePasse = document.getElementById('mot_de_passe').value;
+                    const confirmationMotDePasse = document.getElementById('confirmation_mot_de_passe').value;
+
+                    // Vérification si les mots de passe correspondent
+                    if (motDePasse !== confirmationMotDePasse) {
+                        Swal.showValidationMessage('Les mots de passe ne correspondent pas');
+                        return false;
+                    }
+
+                    // Appel de la fonction valider() si les mots de passe correspondent
+
+                    const user_modifier = {
+                        id: user_enter._id,
+                        mot_de_passe: motDePasse,
+                        role: role
+
+                    }
+                    console.log(user_modifier)
+
+                    this.valider(user_modifier);
+                }
+            });
+        },
+
+        async valider(user) {
+            const confirmed = await Swal.fire({
+                title: 'Êtes-vous sûr de vouloir valider cet utilisateur ?',
+                text: 'Cette action sera définitive.',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Valider'
+            });
+
+            if (confirmed.isConfirmed) {
+                try {
+                    const response = await updateUser(user._id, user);
+                    // Suite de votre logique après la mise à jour de l'utilisateur
+                    Swal.fire({
+                        title: 'Utilisateur validé !',
+                        text: 'L\'utilisateur a été mis à jour avec succès.',
+                        icon: 'success'
+                    });
+                    // Autres actions à exécuter après la validation réussie
+                } catch (error) {
+                    console.log(error);
+                    Swal.fire({
+                        title: 'Erreur',
+                        text: 'Une erreur s\'est produite lors de la validation de l\'utilisateur.',
+                        icon: 'error'
+                    });
+                    // Actions à prendre en cas d'erreur
+                }
+            } else {
+                // Si l'utilisateur a annulé la confirmation
+                Swal.fire('Opération annulée', 'La validation de l\'utilisateur a été annulée.', 'info');
+                // Autres actions à exécuter après l'annulation de la confirmation
+            }
+        }
+        ,
 
         displayForm() {
             this.display_form_user = true;
@@ -350,7 +455,7 @@ table {
     width: 100%;
 }
 
-th,
+/* th,
 td {
     border: 1px solid #ddd;
     padding: 8px;
@@ -358,20 +463,24 @@ td {
 
 th {
     background-color: #f2f2f2;
-}
+} */
 
 
 
 /* Bouton pour afficher le formulaire  */
-.display_user_form {
+/* .display_user_form {
     background-color: #00BF63;
     height: 30px;
     margin: 5px;
     border-radius: 7px;
-}
+} */
 
 .display_user_form:hover {
     background-color: #008000
+}
+
+.menu_horizontal {
+    margin-bottom: 120px;
 }
 
 
@@ -433,7 +542,38 @@ input[type="submit"]:hover {
     margin: 2px;
 }
 
+.btn1 {
+    width: 100px;
+}
+
 .h1 {
+
     background-color: #23527c;
+}
+
+table {
+    border-collapse: collapse;
+    width: 80%;
+    margin: auto;
+}
+
+th,
+td {
+    border: 1px solid #ddd;
+    padding: 5px;
+}
+
+.nom {
+    text-align: left;
+    padding-left: 5px;
+}
+
+th {
+    background-color: #f2f2f2;
+}
+
+.contenu {
+    height: 200vh;
+
 }
 </style>
